@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import swp_project.dna_service.validator.DobContraint;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,11 +18,12 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
 
-    @Size(min = 3, max = 10 , message = "Username must be between 3 and 10 characters")
+    @Size(min = 3, max = 16 , message = "USERNAME_ERROR_CODE")
     String username ;
-    @Size(min = 3, max = 10 , message = "Password must be between 3 and 10 characters")
+    @Size(min = 3, max = 16 , message = "PASS_ERROR_CODE")
     String password;
-    String firstname ;
-    String lastname ;
+    String email ;
+    String full_name;
+    @DobContraint(min = 10, message = "DOB_INVALID")
     LocalDate dob;
 }
