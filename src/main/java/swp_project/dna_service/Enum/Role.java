@@ -1,4 +1,4 @@
-package swp_project.dna_service.asd;
+package swp_project.dna_service.Enum;
 
 public enum Role {
 

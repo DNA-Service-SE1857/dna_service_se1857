@@ -1,23 +1,15 @@
-# Stage 1: build
-# Start with a Maven image that includes JDK 21
-FROM maven:3.9.9-amazoncorretto-21 AS build
+# Dùng image OpenJDK làm base
+FROM eclipse-temurin:21-jre
 
-# Copy source code and pom.xml file to /app folder
+
+# Thư mục làm việc trong container
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
 
-# Build source code with maven
-RUN mvn package -DskipTests
+# Copy file jar vào container
+COPY target/dna_service-0.0.1-SNAPSHOT.jar ./dna_service.jar
 
-#Stage 2: create image
-# Start with Amazon Correto JDK 21
-FROM amazoncorretto:21.0.4
+# Expose port 8080 (cổng ứng dụng chạy)
+EXPOSE 8080
 
-# Set working folder to App and copy complied file from above step
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
+# Lệnh chạy app
+ENTRYPOINT ["java", "-jar", "dna_service.jar"]

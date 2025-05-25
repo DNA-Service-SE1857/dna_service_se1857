@@ -1,6 +1,5 @@
-package swp_project.dna_service.dto.request;
+package swp_project.dna_service.dto.response;
 
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
-public class RoleRequest {
+public class RoleResponse {
     String name;
     String description;
 }

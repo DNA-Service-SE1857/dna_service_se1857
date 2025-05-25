@@ -14,7 +14,17 @@ public enum ErrorCode {
     USER_NOT_FOUND(101,"User not found" , HttpStatusCode.valueOf(404)),
     USER_ALREADY_EXISTS(102, "User already exists" , HttpStatusCode.valueOf(409)),
     PASS_ERROR_CODE(103, "Password is invalid" , HttpStatusCode.valueOf(400)),
-    ACCESS_DENIED(106, "Access denied !", HttpStatus.FORBIDDEN);
+    USERNAME_ERROR_CODE(104, "Username is invalid" , HttpStatusCode.valueOf(400)),
+    ACCESS_DENIED(98, "Access denied !", HttpStatus.FORBIDDEN),
+    JWT_SIGNING_ERROR(97, "JWT signing error", HttpStatus.INTERNAL_SERVER_ERROR),
+    UNAUTHENTICATED(105, "Unauthenticated (Username or Password is invalid)", HttpStatus.UNAUTHORIZED),
+    INVALID_TOKEN(106 ,"Token not access" , HttpStatus.UNAUTHORIZED),
+    TOKEN_EXPIRED(107 , "Token is exists " , HttpStatus.UNAUTHORIZED),
+    EMAIL_INVALID(108, "Email is invalid", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_FOUND(109, "Role not found", HttpStatus.NOT_FOUND),
+    LOGOUT_ERROR(110, "Logout error", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOKEN_ALREADY_EXISTS(111, "Token already exists", HttpStatus.CONFLICT),
+    DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;
     String message ;

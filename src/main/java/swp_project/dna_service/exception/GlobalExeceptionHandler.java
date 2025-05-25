@@ -56,13 +56,15 @@ public class GlobalExeceptionHandler {
     ResponseEntity<ApiResponse<String>> handlingMethodArgumentNotValidException(
             MethodArgumentNotValidException exception) {
 
-        String enumKey = Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage();
-        log.info("EnumKey received: " + enumKey);
+        String errorMessage = Objects.requireNonNull(exception.getBindingResult().getFieldError()).getDefaultMessage();
+        log.info("Validation error message: " + errorMessage);
 
-        ErrorCode errorCode = ErrorCode.valueOf(enumKey);
+        ErrorCode errorCode = ErrorCode.valueOf(errorMessage);
 
-        ApiResponse<String> apiResponse =
-                ApiResponse.<String>builder().code(errorCode.getCode()).message(errorCode.getMessage()).build();
+        ApiResponse<String> apiResponse = ApiResponse.<String>builder()
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .build();
 
         return ResponseEntity.badRequest().body(apiResponse);
     }

@@ -1,11 +1,14 @@
 package swp_project.dna_service.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import swp_project.dna_service.validator.DobContraint;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -21,7 +24,13 @@ public class User {
     String id ;
     String username;
     String password ;
-    String firstname;
-    String lastname;
+    @Email(message = "EMAIL_INVALID")
+    String email ;
+    String full_name;
+
+    @DobContraint(min = 10, message = "DOB_INVALID")
     LocalDate dob;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    Set<Role> roles;
 }

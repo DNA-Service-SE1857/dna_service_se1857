@@ -1,4 +1,16 @@
 package swp_project.dna_service.mapper;
 
-public class RoleMapper {
+
+import org.mapstruct.Mapper;
+import swp_project.dna_service.dto.request.RoleRequest;
+import swp_project.dna_service.dto.response.RoleResponse;
+import swp_project.dna_service.entity.Role;
+
+@Mapper(componentModel = "spring")
+public interface RoleMapper {
+
+
+    Role toRole(RoleRequest request);
+
+    RoleResponse toRoleResponse(Role role);
 }

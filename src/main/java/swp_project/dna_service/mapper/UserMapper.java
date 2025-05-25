@@ -3,14 +3,20 @@ package swp_project.dna_service.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import swp_project.dna_service.dto.request.UserRequest;
+import org.mapstruct.MappingTarget;
+import swp_project.dna_service.dto.request.UserCreationRequest;
+import swp_project.dna_service.dto.request.UserUpdateRequest;
 import swp_project.dna_service.dto.response.UserResponse;
 import swp_project.dna_service.entity.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
-    User toUser (UserRequest request);
+    User toUser (UserCreationRequest request);
 
+    @Mapping(target = "roles", source = "roles")
     UserResponse toUserResponse (User user);
+
+    @Mapping(target = "roles", ignore = true)
+    void updateUser (@MappingTarget User user, UserUpdateRequest request);
 }
