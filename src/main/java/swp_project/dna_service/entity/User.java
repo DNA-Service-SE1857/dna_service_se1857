@@ -31,6 +31,14 @@ public class User {
     @DobContraint(min = 10, message = "DOB_INVALID")
     LocalDate dob;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    Date createdAt = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false)
+    Date updatedAt = new Date();
+
+
     @ManyToMany(cascade = CascadeType.PERSIST)
     Set<Role> roles;
 

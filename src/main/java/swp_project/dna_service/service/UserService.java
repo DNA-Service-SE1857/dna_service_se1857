@@ -55,6 +55,9 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));
         user.setRoles(Set.of(userRole));
 
+        user.setCreatedAt(new java.util.Date());
+        user.setUpdatedAt(new java.util.Date());
+
         userRepository.save(user);
 
         return userMapper.toUserResponse(user);
@@ -71,6 +74,9 @@ public class UserService {
 
         userMapper.updateUser(user, request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        user.setCreatedAt(new java.util.Date());
+        user.setUpdatedAt(new java.util.Date());
 
         userRepository.save(user);
         log.info("User with id {} updated successfully", id);
