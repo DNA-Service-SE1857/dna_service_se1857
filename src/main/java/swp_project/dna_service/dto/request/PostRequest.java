@@ -1,4 +1,5 @@
-package swp_project.dna_service.dto.response;
+package swp_project.dna_service.dto.request;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +12,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
-public class AuthenticationResponse {
+public class PostRequest {
     String userId;
-    boolean authenticated;
-    String token;
+    String id;
+    String title ;
+    String content;
+
 }

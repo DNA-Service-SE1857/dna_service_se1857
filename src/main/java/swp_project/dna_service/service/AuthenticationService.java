@@ -53,7 +53,8 @@ public class AuthenticationService {
         
         var user = userRepository.findUserByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-                
+
+        String userId = user.getId();
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if(!authenticated) throw new AppException(ErrorCode.UNAUTHENTICATED);
@@ -61,6 +62,7 @@ public class AuthenticationService {
         var token = generateToken(user);
         log.info("User {} authenticated successfully", user.getUsername());
         return AuthenticationResponse.builder()
+                .userId(userId)
                 .authenticated(true)
                 .token(token)
                 .build();

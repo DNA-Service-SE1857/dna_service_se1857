@@ -2,6 +2,7 @@ package swp_project.dna_service.controller;
 
 
 import com.nimbusds.jose.JOSEException;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import java.text.ParseException;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
+@Tag(name = "AuthenticationController", description = "Handles authentication operations")
 public class AuthenticationController {
 
     AuthenticationService authenticationService;

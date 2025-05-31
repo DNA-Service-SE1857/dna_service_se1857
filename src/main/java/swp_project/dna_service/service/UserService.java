@@ -60,6 +60,24 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    public UserResponse updateUser(String id, UserUpdateRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if (userRepository.existsUserByUsername(request.getUsername()) &&
+                !user.getUsername().equals(request.getUsername())) {
+            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+        }
+
+        userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        userRepository.save(user);
+        log.info("User with id {} updated successfully", id);
+
+        return userMapper.toUserResponse(user);
+    }
+
     public UserResponse getUserById(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -73,24 +91,6 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse)
                 .toList();
-    }
-
-    public UserResponse updateUser(String id, UserUpdateRequest request) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-
-        if (userRepository.existsUserByUsername(request.getUsername()) &&
-            !user.getUsername().equals(request.getUsername())) {
-            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
-        }
-
-        userMapper.updateUser(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        userRepository.save(user);
-        log.info("User with id {} updated successfully", id);
-
-        return userMapper.toUserResponse(user);
     }
 
     public void deleteUser(String id) {

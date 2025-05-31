@@ -33,4 +33,9 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     Set<Role> roles;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<PostStatus> postStatuses;
+
+
 }

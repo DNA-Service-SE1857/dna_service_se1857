@@ -2,7 +2,6 @@ package swp_project.dna_service.exception;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,6 +23,9 @@ public enum ErrorCode {
     ROLE_NOT_FOUND(109, "Role not found", HttpStatus.NOT_FOUND),
     LOGOUT_ERROR(110, "Logout error", HttpStatus.INTERNAL_SERVER_ERROR),
     TOKEN_ALREADY_EXISTS(111, "Token already exists", HttpStatus.CONFLICT),
+    POST_NOT_FOUND(112, "Post not found", HttpStatus.NOT_FOUND),
+    POST_ALREADY_EXISTS(113, "Post already exists", HttpStatus.CONFLICT),
+    OWNER_OF_POST(114, "You are not the owner of the post", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

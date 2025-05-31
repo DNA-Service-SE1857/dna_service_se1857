@@ -21,7 +21,6 @@ import java.util.List;
 @Validated
 public class UserController {
 
-    @Autowired
     UserService userService;
 
     @PostMapping("/register")
