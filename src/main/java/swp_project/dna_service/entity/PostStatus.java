@@ -27,10 +27,10 @@ public class PostStatus {
     User user;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at" )
     Date createdAt = new Date();
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     Date updatedAt = new Date();
 
 }

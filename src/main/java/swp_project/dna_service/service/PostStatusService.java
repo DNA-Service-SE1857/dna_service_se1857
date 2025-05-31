@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import swp_project.dna_service.dto.request.PostRequest;
@@ -31,7 +30,7 @@ public class PostStatusService {
     PostMapper postMapper;
     PostStatusRepository postStatusRepository;
     UserRepository userRepository;
-    private final JwtAuthenticationConverter jwtAuthenticationConverter;
+
 
     public PostResponse createPost(PostRequest request) {
         log.info("Creating post with request: {}", request);
@@ -53,12 +52,13 @@ public class PostStatusService {
             });
 
         try {
+
             var postStatus = postMapper.toPostStatus(request);
             postStatus.setUser(user);
+            postStatus.setCreatedAt(new Date());
+            postStatus.setUpdatedAt(new Date());
 
             var savedPost = postStatusRepository.save(postStatus);
-            savedPost.setCreatedAt(new Date());
-            savedPost.setUpdatedAt(new Date());
             log.info("Successfully created post with ID: {}", savedPost.getId());
 
             PostResponse response = postMapper.toPostResponse(savedPost);
@@ -88,7 +88,7 @@ public PostResponse updatePost(String postId, PostRequest request) {
     var postStatus = postStatusRepository.findById(postId)
             .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
 
-    // Kiểm tra xem người dùng hiện tại có phải là chủ của bài post không
+
     if (!postStatus.getUser().getId().equals(currentUserId)) {
         log.error("User {} attempted to update post {} owned by user {}", 
                 currentUserId, postId, postStatus.getUser().getId());
@@ -96,10 +96,10 @@ public PostResponse updatePost(String postId, PostRequest request) {
     }
 
     try {
-        // Cập nhật thông tin bài post
+
         postMapper.updatePost(postStatus, request);
 
-        postStatus.setUpdatedAt(new Date()); // Cập nhật thời gian sửa đổi
+        postStatus.setUpdatedAt(new Date());
         var savedPost = postStatusRepository.save(postStatus);
         log.info("Successfully updated post with ID: {} by user: {}", postId, currentUserId);
 
@@ -115,9 +115,6 @@ public PostResponse updatePost(String postId, PostRequest request) {
 
     public List<PostResponse> getPostsByUserId(String userId) {
         log.info("Fetching posts for user with id: {}", userId);
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-            
         return postStatusRepository.findByUserId(userId).stream()
                 .map(postMapper::toPostResponse)
                 .peek(response -> response.setUserId(userId))
@@ -138,7 +135,46 @@ public PostResponse updatePost(String postId, PostRequest request) {
 }
 
     public void deletePost(String id) {
-        log.info("Deleting post with id: {}", id);
-        postStatusRepository.deleteById(id);
+        log.info("Attempting to delete post with id: {}", id);
+
+        if (id == null) {
+            log.error("Post ID is null");
+            throw new AppException(ErrorCode.POST_NOT_FOUND);
+        }
+
+        PostStatus postStatus = postStatusRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Post not found with ID: {}", id);
+                    return new AppException(ErrorCode.POST_NOT_FOUND);
+                });
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication.getPrincipal() instanceof Jwt jwt)) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        String userId = jwt.getClaimAsString("userId");
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+
+        boolean isAdmin = user.getRoles().contains("ROLE_ADMIN");
+        boolean isOwner = postStatus.getUser().getId().equals(userId);
+
+        if (!isAdmin && !isOwner) {
+            log.error("User {} is not authorized to delete post {}", userId, id);
+            throw new AppException(ErrorCode.OWNER_OF_POST);
+        }
+
+        try {
+            postStatusRepository.deleteById(id);
+            log.info("Successfully deleted post with id: {}", id);
+        } catch (Exception e) {
+            log.error("Error deleting post with id {}: {}", id, e.getMessage());
+            throw new ServiceException("Failed to delete post: " + e.getMessage());
+        }
     }
+
 }

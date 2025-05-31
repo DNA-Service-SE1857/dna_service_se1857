@@ -10,8 +10,10 @@ import swp_project.dna_service.entity.PostStatus;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
-    @Mapping(target = "id", ignore = true )
-    PostStatus toPostStatus (PostRequest request);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    PostStatus toPostStatus(PostRequest request);
 
     @Mapping(target = "id", source = "id")
     PostResponse toPostResponse (PostStatus postStatus);

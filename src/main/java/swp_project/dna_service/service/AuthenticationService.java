@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import swp_project.dna_service.dto.request.AuthenticationRequest;
 import swp_project.dna_service.dto.request.IntrospectRequest;
 import swp_project.dna_service.dto.request.LogoutRequest;
@@ -21,6 +22,7 @@ import swp_project.dna_service.dto.request.RefreshRequest;
 import swp_project.dna_service.dto.response.AuthenticationResponse;
 import swp_project.dna_service.dto.response.IntrospectResponse;
 import swp_project.dna_service.entity.InvalidatedToken;
+import swp_project.dna_service.entity.Role;
 import swp_project.dna_service.entity.User;
 import swp_project.dna_service.exception.AppException;
 import swp_project.dna_service.exception.ErrorCode;
@@ -30,7 +32,10 @@ import swp_project.dna_service.repository.UserRepository;
 import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
+import java.util.StringJoiner;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -136,12 +141,18 @@ public class AuthenticationService {
     private String generateToken (User user){
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512) ;
 
+        List<String> roles = user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.toList());
+
+
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
                 .issuer("DNA Service")
                 .issueTime(new java.util.Date())
                 .expirationTime(Date.from(new java.util.Date().toInstant().plus(1, ChronoUnit.HOURS)))
                 .claim("userId", user.getId())
+                .claim("role", roles)
                 .jwtID(UUID.randomUUID().toString())
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -180,5 +191,18 @@ public class AuthenticationService {
 
         return AuthenticationResponse.builder().token(token).authenticated(true).build();
     }
+
+//    private String buildScope(User user) {
+//        StringJoiner stringJoiner = new StringJoiner(" ");
+//
+//        if (!CollectionUtils.isEmpty(user.getRoles())) {
+//            user.getRoles()
+//                    .forEach(
+//                            role -> {
+//                                stringJoiner.add("ROLE_" + role.getName());
+//                            });
+//        }
+//        return stringJoiner.toString();
+//    }
 
 }

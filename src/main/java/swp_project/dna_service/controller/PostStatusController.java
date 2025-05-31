@@ -2,6 +2,7 @@ package swp_project.dna_service.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import swp_project.dna_service.dto.ApiResponse;
 import swp_project.dna_service.dto.request.PostRequest;
@@ -49,6 +50,7 @@ public class PostStatusController {
     }
 
     @DeleteMapping("/{postId}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<Void> deletePostStatus(@PathVariable String postId) {
         postService.deletePost(postId);
         return ApiResponse.<Void>builder()
