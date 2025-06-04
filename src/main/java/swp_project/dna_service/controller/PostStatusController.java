@@ -50,7 +50,6 @@ public class PostStatusController {
     }
 
     @DeleteMapping("/{postId}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<Void> deletePostStatus(@PathVariable String postId) {
         postService.deletePost(postId);
         return ApiResponse.<Void>builder()
@@ -58,6 +57,7 @@ public class PostStatusController {
                 .message("Delete post status successfully")
                 .build();
     }
+    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @PutMapping("/{postId}")
     public ApiResponse<PostResponse> updatePostStatus(@PathVariable String postId, @RequestBody PostRequest request) {

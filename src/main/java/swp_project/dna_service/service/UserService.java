@@ -116,6 +116,32 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    public UserResponse createStaff(UserCreationRequest request) {
+        if (userRepository.existsUserByUsername(request.getUsername())) {
+            throw new AppException(ErrorCode.USER_ALREADY_EXISTS);
+        }
+        if (request.getPassword() == null || request.getPassword().length() < 3) {
+            throw new AppException(ErrorCode.PASS_ERROR_CODE);
+        }
+
+        User user = userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findById("ROLE_STAFF")
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND)));
+
+        user.setRoles(roles);
+
+        user.setCreatedAt(new java.util.Date());
+        user.setUpdatedAt(new java.util.Date());
+        userRepository.save(user);
+        log.info("Staff user with username {} created successfully", request.getUsername());
+
+        return userMapper.toUserResponse(user);
+
+    }
+
 
 
 }

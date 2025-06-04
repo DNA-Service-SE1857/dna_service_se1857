@@ -19,7 +19,7 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping
-    ApiResponse<RoleResponse> create(@RequestBody RoleRequest request) {
+    ApiResponse<RoleResponse> createRole(@RequestBody RoleRequest request) {
         return ApiResponse.<RoleResponse>builder()
                 .code(200)
                 .message("Role created successfully")
@@ -33,6 +33,17 @@ public class RoleController {
                 .code(200)
                 .message("Roles retrieved successfully")
                 .result(roleService.getAllRole())
+                .build();
+    }
+
+    @PutMapping("/{role}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    ApiResponse<RoleResponse> updateRole(@PathVariable String role, @RequestBody RoleRequest request) {
+        request.setName(role);
+        return ApiResponse.<RoleResponse>builder()
+                .code(200)
+                .message("Role updated successfully")
+                .result(roleService.createRole(request))
                 .build();
     }
 

@@ -4,7 +4,6 @@ package swp_project.dna_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.util.Date;
 
 @Getter
@@ -22,15 +21,19 @@ public class PostStatus {
     String title ;
     String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    User user;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at" )
     Date createdAt = new Date();
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     Date updatedAt = new Date();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    CategoryPost category;
 
 }

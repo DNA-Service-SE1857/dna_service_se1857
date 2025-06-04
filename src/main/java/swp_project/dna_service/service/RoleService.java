@@ -32,6 +32,16 @@ public class RoleService {
         }
     }
 
+    public RoleResponse updateRole(String roleName, RoleRequest request) {
+        log.info("Updating role: {}", roleName);
+        var existingRole = roleReponsitory.findById(roleName)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found: " + roleName));
+
+        roleMapper.updateRole(existingRole, request);
+
+        return roleMapper.toRoleResponse(roleReponsitory.save(existingRole));
+    }
+
     public List<RoleResponse> getAllRole() {
         var roles = roleReponsitory.findAll();
         return roles.stream().map(roleMapper::toRoleResponse).toList();

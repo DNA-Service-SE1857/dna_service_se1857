@@ -37,6 +37,17 @@ public class UserController {
                 .result(userService.createUser(user))
                 .build();
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/register/staff")
+    public ApiResponse<UserResponse> registerStaff(@RequestBody @Valid UserCreationRequest user) {
+        log.info("Registering staff: {}", user.getUsername());
+
+        return ApiResponse.<UserResponse>builder()
+                .message("Staff registered successfully")
+                .code(200)
+                .result(userService.createStaff(user))
+                .build();
+    }
 
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getUserById(@PathVariable String id) {

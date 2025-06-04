@@ -160,7 +160,9 @@ public PostResponse updatePost(String postId, PostRequest request) {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
 
-        boolean isAdmin = user.getRoles().contains("ROLE_ADMIN");
+        boolean isAdmin = SecurityContextHolder.getContext().getAuthentication()
+                    .getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
         boolean isOwner = postStatus.getUser().getId().equals(userId);
 
         if (!isAdmin && !isOwner) {
