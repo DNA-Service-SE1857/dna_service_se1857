@@ -1,33 +1,25 @@
 package swp_project.dna_service.service;
 
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.proc.SecurityContext;
+
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import swp_project.dna_service.dto.request.IntrospectRequest;
 import swp_project.dna_service.dto.request.UserCreationRequest;
 import swp_project.dna_service.dto.request.UserUpdateRequest;
-import swp_project.dna_service.dto.response.IntrospectResponse;
 import swp_project.dna_service.dto.response.UserResponse;
 import swp_project.dna_service.entity.Role;
 import swp_project.dna_service.entity.User;
 import swp_project.dna_service.exception.AppException;
 import swp_project.dna_service.exception.ErrorCode;
 import swp_project.dna_service.mapper.UserMapper;
-import swp_project.dna_service.mapper.UserMapperImpl;
 import swp_project.dna_service.repository.RoleRepository;
 import swp_project.dna_service.repository.UserRepository;
-
-import java.text.ParseException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
