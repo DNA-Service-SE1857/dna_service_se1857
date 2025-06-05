@@ -21,6 +21,7 @@ import swp_project.dna_service.repository.UserRepository;
 @Slf4j
 public class ApplicationInitConfig {
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     Role Role;
@@ -45,6 +46,8 @@ public class ApplicationInitConfig {
                                 .full_name("Administrator")
                                 .roles(roles)
                                 .password(passwordEncoder.encode("admin"))
+                                .createdAt(new java.util.Date())
+                                .updatedAt(new java.util.Date())
                                 .build();
 
                 userReponsitory.save(user);
