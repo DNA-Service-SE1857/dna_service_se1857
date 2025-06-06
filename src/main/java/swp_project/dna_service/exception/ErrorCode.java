@@ -26,6 +26,8 @@ public enum ErrorCode {
     POST_NOT_FOUND(112, "Post not found", HttpStatus.NOT_FOUND),
     POST_ALREADY_EXISTS(113, "Post already exists", HttpStatus.CONFLICT),
     OWNER_OF_POST(114, "You are not the owner of the post", HttpStatus.NOT_FOUND),
+    CATEGORY_NOT_FOUND(115, "Category not found", HttpStatus.NOT_FOUND),
+    CATEGORY_ALREADY_EXISTS(116, "Category already exists", HttpStatus.CONFLICT),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;
