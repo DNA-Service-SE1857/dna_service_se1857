@@ -24,6 +24,8 @@ public class PostStatus {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at" )
     Date createdAt = new Date();
+
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     Date updatedAt = new Date();

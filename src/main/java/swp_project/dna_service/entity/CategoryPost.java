@@ -22,7 +22,14 @@ public class CategoryPost {
     String id;
     String categoryName;
     Boolean isActive;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_at")
     Date createdAt = new Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_at")
+    Date updatedAt = new Date();
 
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
