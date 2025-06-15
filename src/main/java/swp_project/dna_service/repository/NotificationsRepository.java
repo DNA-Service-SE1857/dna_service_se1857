@@ -17,6 +17,4 @@ public interface NotificationsRepository extends JpaRepository<Notifications, St
 
     Optional<Notifications> findByIdAndUser_Id(String id, String userId);
 
-
-
 }
