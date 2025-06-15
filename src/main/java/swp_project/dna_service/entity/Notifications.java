@@ -1,36 +1,35 @@
 package swp_project.dna_service.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
 import java.util.Date;
 
-@Getter
-@Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-public class PostStatus {
+
+public class Notifications {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String title ;
-    String content;
+    String title;
+    String message;
+    String type;
+    Boolean is_read;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at" )
     Date createdAt = new Date();
 
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    Date updatedAt = new Date();
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 }
+
