@@ -21,8 +21,8 @@ public class GlobalExeceptionHandler {
 
         ApiResponse<String> apiResponse = new ApiResponse<>();
 
-        apiResponse.setCode(ErrorCode.USER_ALREADY_EXISTS.getCode());
-        apiResponse.setMessage(ErrorCode.USER_ALREADY_EXISTS.getMessage());
+        apiResponse.setCode(ErrorCode.ACCESS_DENIED.getCode());
+        apiResponse.setMessage(ErrorCode.ACCESS_DENIED.getMessage());
 
         return ResponseEntity.badRequest().body(apiResponse);
     }

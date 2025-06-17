@@ -13,8 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Builder
 public class PostRequest {
-    String userId;
-    String id;
     String title ;
     String content;
     String imageUrl;
