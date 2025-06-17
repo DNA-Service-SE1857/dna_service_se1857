@@ -48,4 +48,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE} , orphanRemoval = true)
     Set<Notifications> notifications;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Dna_Service> dna_services;
 }

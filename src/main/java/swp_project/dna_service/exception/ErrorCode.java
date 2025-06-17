@@ -29,6 +29,7 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(115, "Category not found", HttpStatus.NOT_FOUND),
     CATEGORY_ALREADY_EXISTS(116, "Category already exists", HttpStatus.CONFLICT),
     NOTIFICATION_NOT_FOUND(117, "Notification not found", HttpStatus.NOT_FOUND),
+    SERVICE_CREATION_FAILED(118, "Service creation failed", HttpStatus.INTERNAL_SERVER_ERROR),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

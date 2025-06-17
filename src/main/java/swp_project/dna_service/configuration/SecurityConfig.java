@@ -39,6 +39,8 @@ public class SecurityConfig {
             "/swagger-config" ,
             "/status",
             "/status/**",
+            "/service",
+            "/service/**",
     };
 
     private CustomJwtDecoder customJwtDecoder;
