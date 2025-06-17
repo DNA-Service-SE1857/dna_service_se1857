@@ -29,7 +29,7 @@ public class PostStatusController {
                 .message("Post status created successfully")
                 .build();
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/post/{userId}")
     public ApiResponse<List<PostResponse>> getPostStatus(@PathVariable String userId) {
         var result = postService.getPostsByUserId(userId);
         return ApiResponse.<List<PostResponse>>builder()

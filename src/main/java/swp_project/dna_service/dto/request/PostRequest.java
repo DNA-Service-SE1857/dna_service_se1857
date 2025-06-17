@@ -17,4 +17,6 @@ public class PostRequest {
     String id;
     String title ;
     String content;
+    String imageUrl;
+
 }

@@ -20,6 +20,7 @@ public class PostStatus {
     String id;
     String title ;
     String content;
+    String imageUrl;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at" )

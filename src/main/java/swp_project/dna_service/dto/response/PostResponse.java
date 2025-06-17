@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +19,7 @@ public class PostResponse {
     String id;
     String title ;
     String content;
+    String imageUrl;
+    Date createdAt;
+    Date updatedAt;
 }
