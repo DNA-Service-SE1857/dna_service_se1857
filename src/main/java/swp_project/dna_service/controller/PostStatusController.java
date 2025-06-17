@@ -39,6 +39,17 @@ public class PostStatusController {
                 .build();
     }
 
+    @GetMapping("/{postId}")
+    public ApiResponse<PostResponse> getPostStatusById(@PathVariable String postId) {
+        var result = postService.getPostById(postId);
+        return ApiResponse.<PostResponse>builder()
+                .code(200)
+                .result(result)
+                .message("Post status retrieved successfully")
+                .build();
+    }
+
+
     @GetMapping
     public ApiResponse<List<PostResponse>> getAllPostStatus() {
         var result = postService.getAllPosts();

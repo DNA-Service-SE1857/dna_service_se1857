@@ -38,6 +38,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/swagger-config" ,
             "/status",
+            "/status/**",
     };
 
     private CustomJwtDecoder customJwtDecoder;

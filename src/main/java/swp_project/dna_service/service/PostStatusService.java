@@ -73,8 +73,10 @@ public class PostStatusService {
 
 public PostResponse updatePost(String postId, PostRequest request) {
     log.info("Updating post with id: {} and request: {}", postId, request);
-    
-    // Lấy thông tin user từ token hiện tại
+    if (postId == null || postId.isEmpty()) {
+        log.error("Post ID is null or empty");
+        throw new AppException(ErrorCode.POST_NOT_FOUND);
+    }
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUserId;
     if (authentication.getPrincipal() instanceof Jwt jwt) {
@@ -84,7 +86,7 @@ public PostResponse updatePost(String postId, PostRequest request) {
         throw new AppException(ErrorCode.USER_NOT_FOUND);
     }
 
-    // Tìm bài post cần update
+    log.debug("Current user ID: {}", currentUserId);
     var postStatus = postStatusRepository.findById(postId)
             .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND));
 
@@ -119,6 +121,26 @@ public PostResponse updatePost(String postId, PostRequest request) {
                 .map(postMapper::toPostResponse)
                 .peek(response -> response.setUserId(userId))
                 .toList();
+    }
+
+    public PostResponse getPostById(String id) {
+        log.info("Fetching post with id: {}", id);
+        if (id == null || id.isEmpty()) {
+            log.error("Post ID is null or empty");
+            throw new AppException(ErrorCode.POST_NOT_FOUND);
+        }
+
+        PostStatus postStatus = postStatusRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Post not found with ID: {}", id);
+                    return new AppException(ErrorCode.POST_NOT_FOUND);
+                });
+
+        PostResponse response = postMapper.toPostResponse(postStatus);
+        if (postStatus.getUser() != null) {
+            response.setUserId(postStatus.getUser().getId());
+        }
+        return response;
     }
 
     public List<PostResponse> getAllPosts() {
