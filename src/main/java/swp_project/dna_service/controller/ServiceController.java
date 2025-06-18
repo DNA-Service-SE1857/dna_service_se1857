@@ -74,6 +74,18 @@ public class ServiceController {
                 .build();
     }
 
+    @GetMapping("/{userId}/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ApiResponse<List<ServiceResponse>> getAllServicesByUserId(@PathVariable String userId) {
+        log.info("Getting all services for user ID: {}", userId);
+       var services = service.getServicesByUserId(userId);
+        return ApiResponse.<List<ServiceResponse>>builder()
+                .code(200)
+                .message("All services for user retrieved successfully")
+                .result(services)
+                .build();
+    }
+
 
     @DeleteMapping("/{serviceId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

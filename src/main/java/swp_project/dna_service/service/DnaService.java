@@ -102,16 +102,11 @@ public class DnaService {
         log.info("Fetching services for user ID: {}", userId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String userId;
         if (authentication.getPrincipal() instanceof Jwt jwt) {
             userId = jwt.getClaimAsString("userId");
             log.debug("Extracted user ID from JWT: {}", userId);
         } else {
             log.error("Unexpected principal type: {}", authentication.getPrincipal().getClass());
-            throw new AppException(ErrorCode.USER_NOT_FOUND);
-        }
-        if (userId == null || userId.isEmpty()) {
-            log.error("User ID is null or empty");
             throw new AppException(ErrorCode.USER_NOT_FOUND);
         }
         List<Dna_Service> services = serviceRepository.findByUserId(userId);

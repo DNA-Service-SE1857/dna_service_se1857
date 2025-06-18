@@ -19,6 +19,7 @@ public class ServiceResponse {
 
     String userId;
 
+    String serviceId;
     String service_name;
     String service_description;
     String service_category;
