@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @NoArgsConstructor
@@ -18,12 +19,14 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id;
 
-    @Column(name = "doctor_code", nullable = false, unique = true)
-     String doctorCode;
-
-     Boolean isActive;
+    String doctorCode;
+    Boolean isActive;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-     LocalDateTime createdAt;
+    Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    Date updatedAt;
 }

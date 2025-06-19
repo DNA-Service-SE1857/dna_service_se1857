@@ -10,6 +10,7 @@ import swp_project.dna_service.dto.request.NotificationsRequest;
 import swp_project.dna_service.dto.response.NotificationsResponse;
 import swp_project.dna_service.service.NotificationsService;
 import java.util.List;
+
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor

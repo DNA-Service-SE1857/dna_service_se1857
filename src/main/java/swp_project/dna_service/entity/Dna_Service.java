@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -45,7 +46,7 @@ public class Dna_Service {
     @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 
-    @OneToMany(mappedBy = "dna_service", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Appointment> appointments;
+    @OneToMany(mappedBy = "dna_service", cascade = CascadeType.ALL)
+    List<Appointment> appointments;
 
 }

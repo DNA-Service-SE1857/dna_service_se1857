@@ -24,7 +24,7 @@ public class AppointmentResponse {
     String notes ;
     String userId;
 
-    Set<Dna_Service> dna_services ;
+    String serviceId ;
 
     Date createdAt;
     Date updatedAt;
