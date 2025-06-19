@@ -18,7 +18,6 @@ public interface PostMapper {
     @Mapping(target = "id", source = "id")
     PostResponse toPostResponse (PostStatus postStatus);
 
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
