@@ -12,7 +12,7 @@ public interface DoctorMapper {
 
     Doctor toDoctor(DoctorRequest request);
 
-    DoctorResponse toResponse(Doctor doctor);
-
     void updateDoctor (@MappingTarget Doctor doctor, DoctorRequest request);
+
+    DoctorResponse toDoctorResponse(Doctor doctor);
 }

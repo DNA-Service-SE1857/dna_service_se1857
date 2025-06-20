@@ -1,6 +1,5 @@
 package swp_project.dna_service.service;
 
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,12 +10,17 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import swp_project.dna_service.dto.request.DoctorRequest;
 import swp_project.dna_service.dto.response.DoctorResponse;
+import swp_project.dna_service.entity.Doctor;
 import swp_project.dna_service.entity.User;
 import swp_project.dna_service.exception.AppException;
 import swp_project.dna_service.exception.ErrorCode;
 import swp_project.dna_service.mapper.DoctorMapper;
 import swp_project.dna_service.repository.DoctorRepository;
 import swp_project.dna_service.repository.UserRepository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,45 +29,107 @@ import swp_project.dna_service.repository.UserRepository;
 public class DoctorService {
 
     DoctorRepository doctorRepository;
-    DoctorMapper doctorMapper;
     UserRepository userRepository;
+    DoctorMapper doctorMapper;
 
     public DoctorResponse createDoctor(DoctorRequest request) {
         log.info("Creating doctor with request: {}", request);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        String userId;
-        if (authentication.getPrincipal() instanceof Jwt jwt) {
-            userId = jwt.getClaimAsString("userId");
-            log.debug("Extracted user ID from JWT: {}", userId);
-        } else {
-            log.error("Unexpected principal type: {}", authentication.getPrincipal().getClass());
-            throw new AppException(ErrorCode.USER_NOT_FOUND);
-        }
+        String userId = extractUserIdFromJwt();
+        User user = getUserById(userId);
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    log.error("User not found with ID: {}", userId);
-                    return new AppException(ErrorCode.USER_NOT_FOUND);
-                });
-        try {
-            var doctor = doctorMapper.toDoctor(request);
-            doctor.setUser(user);
-            doctor.setCreatedAt(new java.util.Date());
-            doctor.setUpdatedAt(new java.util.Date());
-            doctor = doctorRepository.save(doctor);
-            log.info("Doctor created successfully with ID: {}", doctor.getId());
+        Doctor doctor = doctorMapper.toDoctor(request);
+        doctor.setUser(user);
+        Date now = new Date();
+        doctor.setCreatedAt(now);
+        doctor.setUpdatedAt(now);
 
-            DoctorResponse response = doctorMapper.toResponse(doctor);
-            response.setUserId(userId);
-            response.setDoctorId(doctor.getId());
-            log.info("Returning doctor response: {}", response);
-            return response;
-        } catch (Exception e) {
-            log.error("Error creating service: {}", e.getMessage());
-            throw new AppException(ErrorCode.SERVICE_CREATION_FAILED);
-        }
+        Doctor savedDoctor = doctorRepository.save(doctor);
+        log.info("Created doctor with ID: {}", savedDoctor.getId());
 
+        return doctorMapper.toDoctorResponse(savedDoctor);
     }
 
+    public DoctorResponse updateDoctor(String doctorId, DoctorRequest request) {
+        log.info("Updating doctor with ID: {}", doctorId);
+
+        String userId = extractUserIdFromJwt();
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> {
+                    log.error("Doctor not found with ID: {}", doctorId);
+                    return new AppException(ErrorCode.DOCTOR_NOT_FOUND);
+                });
+
+        // Check permission: owner or admin
+        checkDoctorAccessPermission(doctor, userId);
+
+        doctorMapper.updateDoctor(doctor, request);
+        doctor.setUpdatedAt(new Date());
+
+        Doctor updatedDoctor = doctorRepository.save(doctor);
+        log.info("Updated doctor with ID: {}", updatedDoctor.getId());
+
+        return doctorMapper.toDoctorResponse(updatedDoctor);
+    }
+
+    public DoctorResponse getDoctorById(String doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> {
+                    log.error("Doctor not found with ID: {}", doctorId);
+                    return new AppException(ErrorCode.DOCTOR_NOT_FOUND);
+                });
+        return doctorMapper.toDoctorResponse(doctor);
+    }
+
+    public List<DoctorResponse> getAllDoctors() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        return doctors.stream()
+                .map(doctorMapper::toDoctorResponse)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteDoctor(String doctorId) {
+        log.info("Deleting doctor with ID: {}", doctorId);
+
+        String userId = extractUserIdFromJwt();
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> {
+                    log.error("Doctor not found with ID: {}", doctorId);
+                    return new AppException(ErrorCode.DOCTOR_NOT_FOUND);
+                });
+
+        // Check permission: owner or admin
+        checkDoctorAccessPermission(doctor, userId);
+
+        doctorRepository.delete(doctor);
+        log.info("Deleted doctor with ID: {}", doctorId);
+    }
+
+    // ====== Helper methods ======
+
+    private String extractUserIdFromJwt() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof Jwt jwt) {
+            return jwt.getClaimAsString("userId");
+        }
+        throw new AppException(ErrorCode.UNAUTHENTICATED);
+    }
+
+    private User getUserById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private void checkDoctorAccessPermission(Doctor doctor, String userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        boolean isOwner = doctor.getUser().getId().equals(userId);
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN") || auth.getAuthority().equals("ROLE_STAFF"));
+
+        if (!isOwner && !isAdmin) {
+            log.error("User {} is not authorized to modify doctor {}", userId, doctor.getId());
+            throw new AppException(ErrorCode.ACCESS_DENIED);
+        }
+    }
 }

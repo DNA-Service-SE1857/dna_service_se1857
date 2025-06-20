@@ -31,7 +31,9 @@ public enum ErrorCode {
     NOTIFICATION_NOT_FOUND(117, "Notification not found", HttpStatus.NOT_FOUND),
     SERVICE_CREATION_FAILED(118, "Service creation failed", HttpStatus.INTERNAL_SERVER_ERROR),
     SERVICE_NOT_FOUND(119, "Service not found", HttpStatus.NOT_FOUND),
-    SERVICE_UPDATE_FAILED(120, "Service update failed", HttpStatus.INTERNAL_SERVER_ERROR),  
+    SERVICE_UPDATE_FAILED(120, "Service update failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    DOCTOR_NOT_FOUND(121, "Doctor not found", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED(122, "Unauthorized access", HttpStatus.UNAUTHORIZED),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;
