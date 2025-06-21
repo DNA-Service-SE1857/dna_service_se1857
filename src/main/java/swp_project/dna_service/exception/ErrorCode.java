@@ -34,6 +34,7 @@ public enum ErrorCode {
     SERVICE_UPDATE_FAILED(120, "Service update failed", HttpStatus.INTERNAL_SERVER_ERROR),
     DOCTOR_NOT_FOUND(121, "Doctor not found", HttpStatus.NOT_FOUND),
     UNAUTHORIZED(122, "Unauthorized access", HttpStatus.UNAUTHORIZED),
+    ORDER_NOT_FOUND(123, "Order not found", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

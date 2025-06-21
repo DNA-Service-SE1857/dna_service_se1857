@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,6 +27,14 @@ public class Orders {
     String payment_date ;
     String transaction_id ;
     String notes;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at" )
+    Date createdAt = new java.util.Date();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    Date updatedAt = new java.util.Date();
 
 
     @ManyToOne(fetch = FetchType.LAZY)
