@@ -49,6 +49,6 @@ public class Dna_Service {
     @OneToMany(mappedBy = "dna_service", cascade = CascadeType.ALL)
     List<Appointment> appointments;
 
-    @OneToMany(mappedBy = "dna_service", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dnaService", cascade = CascadeType.ALL)
     List<OrderDetail> orderDetails;
 }

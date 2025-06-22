@@ -4,6 +4,7 @@ package swp_project.dna_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import swp_project.dna_service.service.DnaService;
 
 import java.util.Date;
 
@@ -33,8 +34,8 @@ public class OrderDetail {
     Date updatedAt = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id" ,nullable = false)
-    Dna_Service dna_service;
+    @JoinColumn(name = "service_id")
+    Dna_Service dnaService;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)

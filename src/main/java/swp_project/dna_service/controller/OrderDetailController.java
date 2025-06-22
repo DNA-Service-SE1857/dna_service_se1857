@@ -39,11 +39,11 @@ public class OrderDetailController {
     }
 
     // READ - Get by orderId
-    @GetMapping("/{orderId}")
+    @GetMapping("/{serviceId}")
     public ApiResponse<List<OrderDetailResponse>> getOrderDetail(
-            @PathVariable String orderId) {
+            @PathVariable String serviceId) {
 
-        List<OrderDetailResponse> response = orderDetailService.getByOrderId(orderId);
+        List<OrderDetailResponse> response = orderDetailService.getAllByServiceID(serviceId);
         return ApiResponse.<List<OrderDetailResponse>>builder()
                 .code(200)
                 .message("Order detail fetched successfully")

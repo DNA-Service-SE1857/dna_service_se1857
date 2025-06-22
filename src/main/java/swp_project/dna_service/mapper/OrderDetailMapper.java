@@ -14,19 +14,18 @@ import swp_project.dna_service.entity.Role;
 @Mapper(componentModel = "spring")
 public interface OrderDetailMapper {
 
-
-    @Mapping(source = "dna_service.id", target = "dnaServiceId")
+    @Mapping(source = "dnaService.id", target = "dnaServiceId")
     @Mapping(source = "orders.id", target = "orderId")
     OrderDetailResponse toResponse(OrderDetail entity);
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "dna_service", ignore = true)
+    @Mapping(target = "dnaService", ignore = true)
     @Mapping(target = "orders", ignore = true)
     OrderDetail toOrderDetail(OrderDetailRequest request);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "dna_service", ignore = true)
+    @Mapping(target = "dnaService", ignore = true)
     @Mapping(target = "orders", ignore = true)
     void updateOrderDetail(@MappingTarget OrderDetail orderDetail, OrderDetailRequest request);
 }

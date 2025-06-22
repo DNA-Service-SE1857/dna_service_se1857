@@ -43,7 +43,7 @@ public class OrderDetailService {
 
         OrderDetail orderDetail = orderDetailMapper.toOrderDetail(request);
 
-        orderDetail.setDna_service(service);
+        orderDetail.setDnaService(service);
         orderDetail.setOrders(order);
         orderDetail.setCreatedAt(new java.util.Date());
         orderDetail.setUpdatedAt(new java.util.Date());
@@ -57,8 +57,8 @@ public class OrderDetailService {
     }
 
     // READ all by orderId
-    public List<OrderDetailResponse> getByOrderId(String orderId) {
-        List<OrderDetail> details = orderDetailRepository.findByOrders_Id(orderId);
+    public List<OrderDetailResponse> getAllByServiceID(String serviceId) {
+        List<OrderDetail> details = orderDetailRepository.findByDnaService_Id(serviceId);
         if (details.isEmpty()) {
             throw new AppException(ErrorCode.ORDER_DETAIL_NOT_FOUND);
         }

@@ -8,4 +8,8 @@ import java.util.Optional;
 
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, String> {
     List<OrderDetail> findByOrders_Id(String orderId);
+
+    List<OrderDetail> findByDnaService_Id(String serviceId);
+
+
 }
