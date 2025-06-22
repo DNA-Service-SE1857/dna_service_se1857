@@ -14,34 +14,28 @@ import java.util.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Orders {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    int order_code;
-    String status ;
-    float total_amount ;
-    String payment_method ;
-    String payment_status ;
-    String payment_date ;
-    String transaction_id ;
-    String notes;
+
+    Integer rating;
+    String comment;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at" )
-    Date createdAt = new java.util.Date();
+    @Column(name = "created_at")
+    Date createdAt = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    Date updatedAt = new java.util.Date();
-
+    Date updatedAt = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" ,nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     User user;
 
-    @OneToOne(mappedBy = "orders")
-    Review review;
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orders_id", nullable = false)
+    Orders orders;
 }

@@ -1,0 +1,14 @@
+ALTER TABLE orders CHANGE order_id id BIGINT NOT NULL;
+
+ALTER TABLE review DROP FOREIGN KEY FK39qu1l8wwvyet1jywdp6hnh6c;
+
+ALTER TABLE orders CHANGE order_id id BIGINT NOT NULL;
+
+ALTER TABLE orders DROP PRIMARY KEY;
+
+
+
+
+
+
+

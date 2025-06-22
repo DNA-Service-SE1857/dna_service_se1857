@@ -11,15 +11,15 @@ import swp_project.dna_service.entity.Orders;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
     
-    @Mapping(target = "orderId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     Orders toOrder(OrderRequest orderRequest);
 
-    @Mapping(source = "orderId", target = "orderId")
+    @Mapping(source = "id", target = "orderId")
     @Mapping(source = "user.id", target = "userId")
     OrderResponse toOrderResponse(Orders orders);
 
-    @Mapping(target = "orderId", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     void updateOrder(@MappingTarget Orders orders, OrderRequest orderRequest);
 }

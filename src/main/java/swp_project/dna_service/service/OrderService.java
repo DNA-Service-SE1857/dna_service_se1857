@@ -50,6 +50,7 @@ public class OrderService {
 
         OrderResponse response = orderMapper.toOrderResponse(savedOrder);
         response.setUserId(userId);
+        response.setOrderId(savedOrder.getId());
 
         log.info("Returning order response: {}", response);
         return response ;
@@ -74,16 +75,19 @@ public class OrderService {
         log.info("Getting orders for user ID: {}", userId);
         
         userId = extractUserIdFromJwt();
-        log.debug("Extracted user ID from JWT: {}", userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         
         List<Orders> orders = orderRepository.findByUserId(userId);
         log.debug("Found {} orders for user ID: {}", orders.size(), userId);
-        
+
         return orders.stream()
-                .map(orderMapper::toOrderResponse)
+                .map(order -> {
+                    OrderResponse response = orderMapper.toOrderResponse(order);
+                    response.setOrderId(order.getId());
+                    return response;
+                })
                 .collect(Collectors.toList());
     }
 
