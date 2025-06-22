@@ -23,6 +23,7 @@ import swp_project.dna_service.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,18 +34,15 @@ public class AppointmentService {
     private final UserRepository userRepository;
     private final AppointmentMapper appointmentMapper;
 
-    public AppointmentResponse createAppointment(AppointmentRequest request , String serviceId  ) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = ((Jwt) authentication.getPrincipal()).getClaimAsString("userId");
+    // CREATE
+    public AppointmentResponse createAppointment(AppointmentRequest request, String serviceId) {
+        String userId = getUserIdFromSecurityContext();
 
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-
-    try {
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         Dna_Service service = serviceRepository.findById(serviceId)
-        .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
-
+                .orElseThrow(() -> new AppException(ErrorCode.SERVICE_NOT_FOUND));
 
         Appointment appointment = appointmentMapper.toAppointment(request);
         appointment.setUser(user);
@@ -54,18 +52,51 @@ public class AppointmentService {
         appointment.setAppointment_date(now);
         appointment.setCreatedAt(now);
         appointment.setUpdatedAt(now);
-        
 
-        Appointment savedAppointment = appointmentRepository.save(appointment);
-        AppointmentResponse response = appointmentMapper.toUserResponse(savedAppointment);
-        response.setId(savedAppointment.getId());
-        response.setServiceId(serviceId);
-        response.setUserId(userId);
-        
+        Appointment saved = appointmentRepository.save(appointment);
+        AppointmentResponse response = appointmentMapper.toUserResponse(saved);
+        response.setId(saved.getId());
         return response;
-    } catch (Exception e) {
-        log.error("Error creating appointment: {}", e.getMessage(), e);
-        throw new AppException(ErrorCode.SERVICE_CREATION_FAILED);
     }
-}
+
+    // READ by ID
+    public AppointmentResponse getById(String id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        return appointmentMapper.toUserResponse(appointment);
+    }
+
+    // READ all by user
+    public List<AppointmentResponse> getAllByUser() {
+        String userId = getUserIdFromSecurityContext();
+        return appointmentRepository.findByUserId(userId).stream()
+                .map(appointmentMapper::toUserResponse)
+                .collect(Collectors.toList());
+    }
+
+    // UPDATE
+    public AppointmentResponse updateAppointment(String id, AppointmentRequest request) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+
+        appointmentMapper.updateAppointment(appointment, request); // ✅ gọi đúng cú pháp
+        appointment.setUpdatedAt(new Date());
+
+        Appointment updated = appointmentRepository.save(appointment);
+        return appointmentMapper.toUserResponse(updated);
+    }
+
+
+    // DELETE
+    public void deleteAppointment(String id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.APPOINTMENT_NOT_FOUND));
+        appointmentRepository.delete(appointment);
+    }
+
+
+    private String getUserIdFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ((Jwt) authentication.getPrincipal()).getClaimAsString("userId");
+    }
 }

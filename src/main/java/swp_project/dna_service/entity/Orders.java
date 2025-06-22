@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,12 +37,14 @@ public class Orders {
     @Column(name = "updated_at")
     Date updatedAt = new java.util.Date();
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 
     @OneToOne(mappedBy = "orders")
     Review review;
+
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    List<OrderDetail> orderDetails;
 
 }

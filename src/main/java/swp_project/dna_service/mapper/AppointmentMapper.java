@@ -27,5 +27,5 @@ public interface AppointmentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    void updateAppointment(@MappingTarget Appointment appointment, UserCreationRequest request);
+    void updateAppointment(@MappingTarget Appointment appointment, AppointmentRequest request);
 }

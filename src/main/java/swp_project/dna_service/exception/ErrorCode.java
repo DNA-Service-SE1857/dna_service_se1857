@@ -36,6 +36,8 @@ public enum ErrorCode {
     UNAUTHORIZED(122, "Unauthorized access", HttpStatus.UNAUTHORIZED),
     ORDER_NOT_FOUND(123, "Order not found", HttpStatus.NOT_FOUND),
     REVIEW_NOT_FOUND(124, "Review not found", HttpStatus.NOT_FOUND),
+    ORDER_DETAIL_NOT_FOUND(125, "Order detail not found", HttpStatus.NOT_FOUND),
+    APPOINTMENT_NOT_FOUND(126, "Appointment not found", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;
