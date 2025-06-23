@@ -20,9 +20,9 @@ public class Tasks {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String taskTitle;
-    String taskDescription;
-    String taskType;
+    String task_title;
+    String task_description;
+    String task_type;
     String status;
 
     @Temporal(TemporalType.TIMESTAMP)

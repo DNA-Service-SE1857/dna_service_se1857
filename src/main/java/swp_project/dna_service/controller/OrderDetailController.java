@@ -61,6 +61,16 @@ public class OrderDetailController {
                 .result(responseList)
                 .build();
     }
+    // READ - Get by ID
+    @GetMapping("/{orderDetailId}/detail")
+    public ApiResponse<OrderDetailResponse> getOrderDetailById(@PathVariable String orderDetailId) {
+        OrderDetailResponse response = orderDetailService.getOrderDetailById(orderDetailId);
+        return ApiResponse.<OrderDetailResponse>builder()
+                .code(200)
+                .message("Order detail retrieved successfully")
+                .result(response)
+                .build();
+    }
 
     // UPDATE
     @PutMapping("/{orderDetailId}")

@@ -3,6 +3,8 @@ package swp_project.dna_service.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import swp_project.dna_service.dto.ApiResponse;
 import swp_project.dna_service.dto.request.MedicalRecordRequest;
@@ -14,13 +16,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/medical-records")
 @RequiredArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class MedicalRecordController {
 
     MedicalRecordService medicalRecordService;
 
     // ✅ CREATE
     @PostMapping
-    public ApiResponse<MedicalRecordResponse> createRecord(@RequestBody @Valid MedicalRecordRequest request) {
+    public ApiResponse<MedicalRecordResponse> createRecord(@RequestBody MedicalRecordRequest request) {
         MedicalRecordResponse response = medicalRecordService.createRecord(request);
         return ApiResponse.<MedicalRecordResponse>builder()
                 .code(200)

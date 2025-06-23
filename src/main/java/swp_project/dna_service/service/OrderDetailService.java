@@ -75,6 +75,14 @@ public class OrderDetailService {
                 .collect(Collectors.toList());
     }
 
+    // READ by ID
+    public OrderDetailResponse getOrderDetailById(String orderDetailId) {
+        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_DETAIL_NOT_FOUND));
+        return orderDetailMapper.toResponse(orderDetail);
+    }
+
+
     // UPDATE
     public OrderDetailResponse updateOrderDetail(OrderDetailRequest request, String orderDetailId) {
         OrderDetail existing = orderDetailRepository.findById(orderDetailId)

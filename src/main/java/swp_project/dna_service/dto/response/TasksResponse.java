@@ -19,17 +19,18 @@ import java.util.Date;
 @Builder
 public class TasksResponse {
 
-    String taskTitle;
-    String taskDescription;
-    String taskType;
+    String id;
+    String task_title;
+    String task_description;
+    String task_type;
     String status;
     Date dueDate;
     Date completedDate;
     String notes;
-    Date createdAt = new Date();
-    Date updatedAt = new Date();
-    Dna_Service dnaService;
-    OrderDetail orderDetail;
-    MedicalRecord medicalRecord;
+    Date createdAt;
+    Date updatedAt;
+    String dnaServiceId;
+    String orderDetailId;
+    String medicalRecordId;
 
 }

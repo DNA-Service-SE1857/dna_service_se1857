@@ -17,14 +17,14 @@ import java.util.Date;
 public class MedicalRecordResponse {
 
 
-    String id;
-    int recordCode;
-    String medicalHistory;
-    String allergies;
-    String medications;
-    String healthConditions;
-    String emergencyContactPhone;
-    String emergencyContactName;
+    String id ;
+    int record_code ;
+    String medical_history ;
+    String allergies ;
+    String medications ;
+    String health_conditions ;
+    String emergency_contact_phone ;
+    String emergency_contact_name ;
     Date createdAt;
     Date updatedAt;
     String userId;

@@ -16,14 +16,11 @@ import java.util.Date;
 @Builder
 public class MedicalRecordRequest {
 
-    int recordCode;
-    String medicalHistory;
-    String allergies;
-    String medications;
-    String healthConditions;
-    String emergencyContactPhone;
-    String emergencyContactName;
-    Date createdAt;
-    Date updatedAt;
-    String userId;
+    int record_code ;
+    String medical_history ;
+    String allergies ;
+    String medications ;
+    String health_conditions ;
+    String emergency_contact_phone ;
+    String emergency_contact_name ;
 }
