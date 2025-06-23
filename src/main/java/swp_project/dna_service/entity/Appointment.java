@@ -40,6 +40,6 @@ public class Appointment {
     Dna_Service dna_service;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id" ,nullable = false)
+    @JoinColumn(name = "doctor_time_slot_id" ,nullable = false)
     Doctor doctor;
 }

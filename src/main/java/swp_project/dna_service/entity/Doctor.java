@@ -32,7 +32,7 @@ public class Doctor {
     Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" ,nullable = false)
+    @JoinColumn(name = "doctor_id" ,nullable = false)
     User user;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
