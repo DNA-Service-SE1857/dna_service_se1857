@@ -38,6 +38,7 @@ public enum ErrorCode {
     REVIEW_NOT_FOUND(124, "Review not found", HttpStatus.NOT_FOUND),
     ORDER_DETAIL_NOT_FOUND(125, "Order detail not found", HttpStatus.NOT_FOUND),
     APPOINTMENT_NOT_FOUND(126, "Appointment not found", HttpStatus.NOT_FOUND),
+    RECORD_NOT_FOUND(127, "Record not found", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

@@ -2,9 +2,9 @@ package swp_project.dna_service.entity;
 
 
 import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import swp_project.dna_service.service.DnaService;
 
 import java.util.Date;
 import java.util.List;
@@ -16,33 +16,32 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class OrderDetail {
+public class MedicalRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID )
     String id ;
-
-    int quantity;
-    float unit_price;
-    float subtotal ;
-    String note ;
+    int record_code ;
+    String medical_history ;
+    String allergies ;
+    String medications ;
+    String health_conditions ;
+    String emergency_contact_phone ;
+    String emergency_contact_name ;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    Date createdAt = new Date();
+    Date createdAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
-    Date updatedAt = new Date();
+    Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
-    Dna_Service dnaService;
+    @JoinColumn(name = "user_id" ,nullable = false)
+    User user;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    Orders orders;
-
-    @OneToMany(mappedBy = "orderDetail", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL)
     List<Tasks> tasks;
 
 }

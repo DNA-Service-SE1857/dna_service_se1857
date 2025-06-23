@@ -44,6 +44,7 @@ public class Orders {
     @OneToOne(mappedBy = "orders")
     Review review;
 
+
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     List<OrderDetail> orderDetails;
 

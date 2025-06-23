@@ -2,7 +2,6 @@ package swp_project.dna_service.mapper;
 
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import swp_project.dna_service.dto.request.NotificationsRequest;
 import swp_project.dna_service.dto.response.NotificationsResponse;

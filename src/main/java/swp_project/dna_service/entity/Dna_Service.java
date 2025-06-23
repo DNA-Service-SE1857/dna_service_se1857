@@ -51,4 +51,6 @@ public class Dna_Service {
 
     @OneToMany(mappedBy = "dnaService", cascade = CascadeType.ALL)
     List<OrderDetail> orderDetails;
+
+    
 }
