@@ -38,4 +38,8 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id" ,nullable = false)
     Dna_Service dna_service;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id" ,nullable = false)
+    Doctor doctor;
 }

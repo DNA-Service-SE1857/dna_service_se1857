@@ -1,12 +1,13 @@
+
 package swp_project.dna_service.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
-
 
 @Getter
 @Setter
@@ -15,29 +16,32 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Doctor {
+public class DoctorTimeSlot {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String doctorCode;
-    Boolean isActive;
+    @Column(name = "day_of_week")
+    Integer dayOfWeek;
+
+    @Column(name = "start_time")
+    LocalTime startTime;
+
+    @Column(name = "end_time")
+    LocalTime endTime;
+
+    @Column(name = "is_available")
+    Boolean isAvailable;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
     Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    Date updatedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" ,nullable = false)
-    User user;
+    @JoinColumn(name = "doctor_id", nullable = false)
+    Doctor doctor;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<DoctorCertificate> doctorCertificates;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<DoctorTimeSlot> doctorTimeSlots;
+    @OneToMany(mappedBy = "doctorTimeSlot", cascade = CascadeType.ALL)
+    Set<Appointment> appointments;
 }
