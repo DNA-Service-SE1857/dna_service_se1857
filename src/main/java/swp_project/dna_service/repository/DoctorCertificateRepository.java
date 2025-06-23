@@ -12,7 +12,7 @@ public interface DoctorCertificateRepository extends JpaRepository<DoctorCertifi
 
     List<DoctorCertificate> findAllByDoctor_Id(String doctorId);
 
-    Optional<DoctorCertificate> findByLicensceNumber(String licensceNumber);
+    Optional<DoctorCertificate> findByLicenseNumber(String licenseNumber);
 
     List<DoctorCertificate> findByIsActive(Boolean isActive);
 

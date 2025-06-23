@@ -41,5 +41,9 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_time_slot_id" ,nullable = false)
+    DoctorTimeSlot doctorTimeSlot;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id" ,nullable = false)
     Doctor doctor;
 }
