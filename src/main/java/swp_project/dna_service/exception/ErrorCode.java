@@ -41,6 +41,10 @@ public enum ErrorCode {
     RECORD_NOT_FOUND(127, "Record not found", HttpStatus.NOT_FOUND),
     MEDICAL_RECORD_NOT_FOUND(128, "Medical record not found", HttpStatus.NOT_FOUND),
     TASK_NOT_FOUND(129, "Task not found", HttpStatus.NOT_FOUND),
+    CERTIFICATE_NOT_FOUND(123, "Certificate not found", HttpStatus.NOT_FOUND),
+    CERTIFICATE_CREATION_FAILED(124, "Certificate creation failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    CERTIFICATE_UPDATE_FAILED(125, "Certificate update failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    DOCTOR_NOT_FOUND_BY_ID(126, "Doctor not found by id", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

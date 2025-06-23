@@ -5,8 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
-import java.util.Set;
-
 
 @Getter
 @Setter
@@ -15,12 +13,24 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Doctor {
+public class DoctorCertificate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    String doctorCode;
+    String certificateName;
+
+    String licenseNumber;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "issue_date")
+    Date issueDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "expiry_date")
+    Date expiryDate;
+
     Boolean isActive;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,11 +41,9 @@ public class Doctor {
     @Column(name = "updated_at")
     Date updatedAt;
 
+    String issuedBy;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" ,nullable = false)
-    User user;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<DoctorCertificate> doctorCertificates;
-
+    @JoinColumn(name = "doctor_id", nullable = false)
+    Doctor doctor;
 }
