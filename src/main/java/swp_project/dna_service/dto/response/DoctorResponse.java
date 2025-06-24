@@ -17,6 +17,9 @@ public class DoctorResponse {
     String userId;
     String doctorId ;
     String doctorCode;
+    String doctorName;
+    String doctorEmail;
+    String doctorPhone;
     Boolean isActive;
     Date createdAt;
     Date updatedAt;

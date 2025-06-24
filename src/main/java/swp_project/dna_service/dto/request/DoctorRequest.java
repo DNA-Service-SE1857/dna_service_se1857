@@ -13,5 +13,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class DoctorRequest {
     String doctorCode;
+    String doctorName;
+    String doctorEmail;
+    String doctorPhone;
     Boolean isActive;
 }

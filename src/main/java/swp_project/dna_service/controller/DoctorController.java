@@ -20,7 +20,7 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @PostMapping
-    public ApiResponse<DoctorResponse> createDoctor(@RequestBody @jakarta.validation.Valid DoctorRequest request) {
+    public ApiResponse<DoctorResponse> createDoctor(@RequestBody DoctorRequest request) {
         DoctorResponse response = doctorService.createDoctor(request);
         return ApiResponse.<DoctorResponse>builder()
                 .code(200)

@@ -47,7 +47,11 @@ public class DoctorService {
         Doctor savedDoctor = doctorRepository.save(doctor);
         log.info("Created doctor with ID: {}", savedDoctor.getId());
 
-        return doctorMapper.toDoctorResponse(savedDoctor);
+        DoctorResponse response = doctorMapper.toDoctorResponse(savedDoctor);
+        response.setDoctorId(savedDoctor.getId());
+        response.setUserId(user.getId());
+
+        return response;
     }
 
     public DoctorResponse updateDoctor(String doctorId, DoctorRequest request) {
@@ -78,15 +82,26 @@ public class DoctorService {
                     log.error("Doctor not found with ID: {}", doctorId);
                     return new AppException(ErrorCode.DOCTOR_NOT_FOUND);
                 });
-        return doctorMapper.toDoctorResponse(doctor);
+
+        DoctorResponse response = doctorMapper.toDoctorResponse(doctor);
+        response.setDoctorId(doctor.getId());
+        response.setUserId(doctor.getUser().getId());
+        return response;
     }
 
     public List<DoctorResponse> getAllDoctors() {
         List<Doctor> doctors = doctorRepository.findAll();
+
         return doctors.stream()
-                .map(doctorMapper::toDoctorResponse)
+                .map(doctor -> {
+                    DoctorResponse response = doctorMapper.toDoctorResponse(doctor);
+                    response.setDoctorId(doctor.getId());
+                    response.setUserId(doctor.getUser().getId());
+                    return response;
+                })
                 .collect(Collectors.toList());
     }
+
 
     public void deleteDoctor(String doctorId) {
         log.info("Deleting doctor with ID: {}", doctorId);

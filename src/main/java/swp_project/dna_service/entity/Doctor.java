@@ -20,6 +20,9 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    String doctorName;
+    String doctorEmail;
+    String doctorPhone;
     String doctorCode;
     Boolean isActive;
 
@@ -32,7 +35,7 @@ public class Doctor {
     Date updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id" ,nullable = false)
+    @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
