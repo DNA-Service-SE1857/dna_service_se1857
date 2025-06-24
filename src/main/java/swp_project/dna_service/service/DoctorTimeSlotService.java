@@ -84,6 +84,19 @@ public class DoctorTimeSlotService {
                 .collect(Collectors.toList());
     }
 
+    public List<DoctorTimeSlotResponse> getByDoctorId(String doctorId) {
+        log.info("Fetching time slots for doctor ID: {}", doctorId);
+
+        List<DoctorTimeSlot> slots = slotRepository.findAllByDoctor_Id(doctorId);
+        if (slots.isEmpty()) {
+            log.warn("No time slots found for doctor ID: {}", doctorId);
+        }
+
+        return slots.stream()
+                .map(mapper::toDoctorTimeSlotResponse)
+                .collect(Collectors.toList());
+    }
+
     public void delete(String slotId) {
         log.info("Deleting doctor time slot with ID: {}", slotId);
 

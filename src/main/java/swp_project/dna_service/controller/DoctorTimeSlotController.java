@@ -51,6 +51,15 @@ public class DoctorTimeSlotController {
                 .result(slots)
                 .build();
     }
+    @GetMapping("/doctor/{doctorId}")
+    public ApiResponse<List<DoctorTimeSlotResponse>> getDoctorTimeSlotsByDoctorId(@PathVariable String doctorId) {
+        List<DoctorTimeSlotResponse> slots = doctorTimeSlotService.getByDoctorId(doctorId);
+        return ApiResponse.<List<DoctorTimeSlotResponse>>builder()
+                .code(200)
+                .message("Get doctor time slots by doctor ID successfully")
+                .result(slots)
+                .build();
+    }
 
     @GetMapping("/{slotId}")
     public ApiResponse<DoctorTimeSlotResponse> getDoctorTimeSlot(@PathVariable String slotId) {
