@@ -18,4 +18,5 @@ public class AppointmentRequest {
     String appointment_type ;
     boolean status ;
     String notes ;
+    String doctor_time_slot;
 }

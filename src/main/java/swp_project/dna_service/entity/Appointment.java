@@ -35,15 +35,12 @@ public class Appointment {
     @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id" ,nullable = false)
-    Dna_Service dna_service;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_time_slot_id" ,nullable = false)
     DoctorTimeSlot doctorTimeSlot;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id" ,nullable = false)
-    Doctor doctor;
 }

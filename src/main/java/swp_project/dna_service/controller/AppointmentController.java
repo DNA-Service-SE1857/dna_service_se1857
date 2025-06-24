@@ -22,11 +22,11 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     // CREATE
-    @PostMapping("/{serviceId}")
+    @PostMapping("/{orderId}")
     public ApiResponse<AppointmentResponse> createAppointment(
             @RequestBody AppointmentRequest request,
-            @PathVariable String serviceId) {
-        AppointmentResponse response = appointmentService.createAppointment(request, serviceId);
+            @PathVariable String orderId) {
+        AppointmentResponse response = appointmentService.createAppointment(request, orderId);
         log.info("Appointment created successfully");
         return ApiResponse.<AppointmentResponse>builder()
                 .code(200)

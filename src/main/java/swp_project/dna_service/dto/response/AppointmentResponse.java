@@ -22,9 +22,10 @@ public class AppointmentResponse {
     String appointment_type ;
     boolean status ;
     String notes ;
-    String userId;
 
-    String serviceId ;
+    String userId;
+    String OrderId ;
+    String doctor_time_slot;
 
     Date createdAt;
     Date updatedAt;

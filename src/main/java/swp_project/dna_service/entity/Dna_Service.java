@@ -46,9 +46,6 @@ public class Dna_Service {
     @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 
-    @OneToMany(mappedBy = "dna_service", cascade = CascadeType.ALL)
-    List<Appointment> appointments;
-
     @OneToMany(mappedBy = "dnaService", cascade = CascadeType.ALL)
     List<OrderDetail> orderDetails;
 
