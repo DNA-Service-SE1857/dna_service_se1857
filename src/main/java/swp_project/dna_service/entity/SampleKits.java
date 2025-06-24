@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,25 +15,20 @@ import java.util.List;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Entity
 @ToString
-public class Samples {
+public class SampleKits {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id ;
-
-    String sample_code ;
-    String sample_type ;
-    String collection_method ;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    Date collection_date ;
-    @Temporal(TemporalType.TIMESTAMP)
-    Date received_date;
-
-    String status ;
-    String shipping_tracking ;
-    String notes;
-    String sample_quality ;
+    String kit_code;
+    String kit_type;
+    String status;
+    String shipper_data;
+    Date delivered_date;
+    int tracking_number ;
+    String shipping_address;
+    Date expiry_date;
+    String instruction;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -45,13 +39,11 @@ public class Samples {
     Date updatedAt = new Date();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "samples_id", nullable = false)
+    Samples samples;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
-    @OneToOne
-    @JoinColumn(name = "orders_id", nullable = false)
-    Orders orders;
-
-    @OneToMany(mappedBy = "samples", cascade = CascadeType.ALL)
-    List<SampleKits> sampleKits;
 }

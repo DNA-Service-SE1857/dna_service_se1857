@@ -48,6 +48,7 @@ public enum ErrorCode {
     DOCTOR_NOT_FOUND_BY_ID(126, "Doctor not found by id", HttpStatus.NOT_FOUND),
     SAMPLE_ALREADY_EXISTS(127, "Sample already exists", HttpStatus.CONFLICT),
     SAMPLE_NOT_FOUND(128, "Sample not found", HttpStatus.NOT_FOUND),
+    SAMPLE_KITS_NOT_FOUND(129, "Sample kits not found", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

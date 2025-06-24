@@ -112,6 +112,31 @@ public class AppointmentService {
         return responses;
     }
 
+    public List<AppointmentResponse> getAllAppointments() {
+        log.info("Fetching all appointments");
+
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        List<AppointmentResponse> responses = appointments.stream()
+                .map(appointment -> {
+                    AppointmentResponse response = appointmentMapper.toUserResponse(appointment);
+                    response.setId(appointment.getId());
+                    response.setUserId(appointment.getUser().getId());
+                    response.setOrderId(appointment.getOrders().getId());
+                    response.setDoctor_time_slot(appointment.getDoctorTimeSlot().getId());
+
+                    response.setCreatedAt(appointment.getCreatedAt());
+                    response.setUpdatedAt(appointment.getUpdatedAt());
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+
+        log.info("Found total {} appointments", responses.size());
+        return responses;
+    }
+
+
     // UPDATE
     public AppointmentResponse updateAppointment(String id, AppointmentRequest request) {
         log.info("Updating appointment with ID: {}", id);

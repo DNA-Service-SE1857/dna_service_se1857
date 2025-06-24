@@ -46,8 +46,19 @@ public class AppointmentController {
                 .build();
     }
 
+    // Get all
+    @GetMapping("/all")
+    public ApiResponse<List<AppointmentResponse>> getAllAppointments() {
+        List<AppointmentResponse> responses = appointmentService.getAllAppointments();
+        return ApiResponse.<List<AppointmentResponse>>builder()
+                .code(200)
+                .message("Fetched all appointments successfully")
+                .result(responses)
+                .build();
+    }
+
     // GET all by current user
-    @GetMapping
+    @GetMapping("/user/all")
     public ApiResponse<List<AppointmentResponse>> getAllAppointmentsByUser() {
         List<AppointmentResponse> responses = appointmentService.getAllByUser();
         return ApiResponse.<List<AppointmentResponse>>builder()
