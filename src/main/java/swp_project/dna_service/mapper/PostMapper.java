@@ -1,9 +1,7 @@
 package swp_project.dna_service.mapper;
 
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import swp_project.dna_service.dto.request.PostRequest;
 import swp_project.dna_service.dto.response.PostResponse;
 import swp_project.dna_service.entity.PostStatus;
@@ -21,5 +19,6 @@ public interface PostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updatePost (@MappingTarget PostStatus PostStatus , PostRequest request);
 }

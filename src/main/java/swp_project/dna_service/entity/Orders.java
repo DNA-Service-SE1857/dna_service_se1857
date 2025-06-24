@@ -53,5 +53,8 @@ public class Orders {
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     Appointment appointment;
 
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+    Samples samples;
+
 
 }

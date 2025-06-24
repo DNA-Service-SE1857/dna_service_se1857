@@ -1,9 +1,7 @@
 package swp_project.dna_service.mapper;
 
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import swp_project.dna_service.dto.request.UserCreationRequest;
 import swp_project.dna_service.dto.request.UserUpdateRequest;
 import swp_project.dna_service.dto.response.UserResponse;
@@ -18,5 +16,6 @@ public interface UserMapper {
     UserResponse toUserResponse (User user);
 
     @Mapping(target = "roles", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser (@MappingTarget User user, UserUpdateRequest request);
 }

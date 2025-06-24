@@ -62,7 +62,7 @@ public class OrderController {
                 .result(response)
                 .build();
     }
-    @GetMapping
+    @GetMapping("/all")
     public ApiResponse<List<OrderResponse>> getAllOrders() {
         log.info("Received get all orders request");
         List<OrderResponse> responses = orderService.getAllOrders();

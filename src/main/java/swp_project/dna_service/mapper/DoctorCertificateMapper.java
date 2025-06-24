@@ -1,8 +1,6 @@
 package swp_project.dna_service.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import swp_project.dna_service.dto.request.DoctorCertificateRequest;
 import swp_project.dna_service.dto.response.DoctorCertificateResponse;
 import swp_project.dna_service.entity.Doctor;
@@ -26,6 +24,7 @@ public interface DoctorCertificateMapper {
     @Mapping(target = "issueDate", source = "issueDate")
     @Mapping(target = "expiryDate", source = "expiryDate")
     @Mapping(target = "licenseNumber", source = "licenseNumber")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateDoctorCertificate(@MappingTarget DoctorCertificate entity, DoctorCertificateRequest request);
 
     @Mapping(target = "doctorId", source = "doctor.id")

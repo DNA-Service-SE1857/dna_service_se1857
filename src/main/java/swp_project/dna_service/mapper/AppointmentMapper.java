@@ -1,9 +1,7 @@
 package swp_project.dna_service.mapper;
 
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import swp_project.dna_service.dto.request.AppointmentRequest;
 import swp_project.dna_service.dto.request.UserCreationRequest;
 import swp_project.dna_service.dto.request.UserUpdateRequest;
@@ -27,5 +25,6 @@ public interface AppointmentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAppointment(@MappingTarget Appointment appointment, AppointmentRequest request);
 }

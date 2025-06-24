@@ -1,9 +1,7 @@
 package swp_project.dna_service.mapper;
 
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import swp_project.dna_service.dto.request.OrderDetailRequest;
 import swp_project.dna_service.dto.request.RoleRequest;
 import swp_project.dna_service.dto.response.OrderDetailResponse;
@@ -27,5 +25,6 @@ public interface OrderDetailMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dnaService", ignore = true)
     @Mapping(target = "orders", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateOrderDetail(@MappingTarget OrderDetail orderDetail, OrderDetailRequest request);
 }

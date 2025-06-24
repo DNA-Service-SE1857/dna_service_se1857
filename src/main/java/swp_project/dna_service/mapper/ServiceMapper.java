@@ -14,13 +14,14 @@ public interface ServiceMapper {
     @Mapping(target = "user", ignore = true)
     Dna_Service toService(ServiceRequest request);
 
-    @Mapping(source = "id", target = "serviceId") // Map id của entity thành serviceId của response
-    @Mapping(source = "user.id", target = "userId") // Map user.id thành userId
+    @Mapping(source = "id", target = "serviceId")
+    @Mapping(source = "user.id", target = "userId")
     ServiceResponse toServiceResponse(Dna_Service service);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "user", ignore = true)
+
     void updateService(@MappingTarget Dna_Service service, ServiceRequest request);
 }
