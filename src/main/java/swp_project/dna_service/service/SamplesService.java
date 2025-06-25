@@ -9,14 +9,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import swp_project.dna_service.dto.request.SampleKitsRequest;
 import swp_project.dna_service.dto.request.SamplesRequest;
+import swp_project.dna_service.dto.response.SampleKitsResponse;
 import swp_project.dna_service.dto.response.SamplesResponse;
 import swp_project.dna_service.entity.Orders;
+import swp_project.dna_service.entity.SampleKits;
 import swp_project.dna_service.entity.User;
 import swp_project.dna_service.exception.AppException;
 import swp_project.dna_service.exception.ErrorCode;
 import swp_project.dna_service.mapper.SamplesMapper;
 import swp_project.dna_service.repository.OrderRepository;
+import swp_project.dna_service.repository.SampleKitsRepository;
 import swp_project.dna_service.repository.SamplesRepository;
 import swp_project.dna_service.repository.UserRepository;
 
@@ -34,6 +38,7 @@ public class SamplesService {
     SamplesMapper samplesMapper;
     UserRepository userRepository;
     OrderRepository orderRepository;
+    SampleKitsRepository sampleKitsRepository;
 
     // CREATE
     public SamplesResponse createSample(SamplesRequest request) {
@@ -47,6 +52,9 @@ public class SamplesService {
         Orders order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
 
+        SampleKits sampleKits = sampleKitsRepository.findById(request.getSampleKitsId())
+                .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_KITS_NOT_FOUND));
+
         if (samplesRepository.existsByOrdersAndUser(order, user)) {
             throw new AppException(ErrorCode.SAMPLE_ALREADY_EXISTS);
         }
@@ -57,13 +65,18 @@ public class SamplesService {
         sample.setUpdatedAt(now);
         sample.setOrders(order);
         sample.setUser(user);
+        sample.setSampleKits(List.of(sampleKits));
+
 
         var savedSample = samplesRepository.save(sample);
+
         var response = samplesMapper.toSamplesResponse(savedSample);
         
         response.setOrderId(savedSample.getOrders().getId());
         response.setUserId(savedSample.getUser().getId());
-
+        response.setSampleKitsId(savedSample.getSampleKits().stream()
+                .map(SampleKits::getId)
+                .collect(Collectors.toList()));
         log.info("Sample created successfully: {}", response);
         return response;
     }

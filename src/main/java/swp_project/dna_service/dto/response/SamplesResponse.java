@@ -3,8 +3,10 @@ package swp_project.dna_service.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import swp_project.dna_service.entity.SampleKits;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +30,5 @@ public class SamplesResponse {
 
     String userId;
     String orderId;
+    List<String> sampleKitsId;
 }

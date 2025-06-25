@@ -27,4 +27,5 @@ public class SamplesRequest {
 
     String userId;
     String orderId;
+    String sampleKitsId;
 }
