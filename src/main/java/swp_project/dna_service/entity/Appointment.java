@@ -35,7 +35,7 @@ public class Appointment {
     @JoinColumn(name = "user_id" ,nullable = false)
     User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orders_id", nullable = false)
     Orders orders;
 
