@@ -48,6 +48,17 @@ public class UserController {
                 .result(userService.createStaff(user))
                 .build();
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/register/doctor")
+    public ApiResponse<UserResponse> registerAdmin(@RequestBody @Valid UserCreationRequest user) {
+        log.info("Registering admin: {}", user.getUsername());
+
+        return ApiResponse.<UserResponse>builder()
+                .message("Admin registered successfully")
+                .code(200)
+                .result(userService.createDoctor(user))
+                .build();
+    }
 
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getUserById(@PathVariable String id) {
