@@ -152,6 +152,7 @@ public class UserService {
 
         user.setRoles(roles);
 
+
         user.setCreatedAt(new java.util.Date());
         user.setUpdatedAt(new java.util.Date());
         userRepository.save(user);

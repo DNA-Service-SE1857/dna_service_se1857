@@ -37,7 +37,7 @@ public class AppointmentService {
 
     // CREATE
     public AppointmentResponse createAppointment(AppointmentRequest request, String orderId ) {
-        String userId = getUserIdFromSecurityContext();
+        String userId = extractUserIdFromJwt();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -93,7 +93,7 @@ public class AppointmentService {
 
     // READ all by user
     public List<AppointmentResponse> getAllByUser() {
-        String userId = getUserIdFromSecurityContext();
+        String userId = extractUserIdFromJwt();
         log.info("Fetching all appointments for user: {}", userId);
         
         List<Appointment> appointments = appointmentRepository.findByUserId(userId);
@@ -172,8 +172,11 @@ public class AppointmentService {
     }
 
 
-    private String getUserIdFromSecurityContext() {
+    private String extractUserIdFromJwt() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ((Jwt) authentication.getPrincipal()).getClaimAsString("userId");
+        if (authentication.getPrincipal() instanceof Jwt jwt) {
+            return jwt.getClaimAsString("userId");
+        }
+        throw new AppException(ErrorCode.UNAUTHENTICATED);
     }
 }
