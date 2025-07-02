@@ -33,7 +33,16 @@ public class MedicalRecordController {
                 .build();
     }
 
-    // ✅ GET BY ID
+    @PostMapping("/{userId}")
+    public ApiResponse<MedicalRecordResponse> createRecordByUserID(@RequestBody MedicalRecordRequest request , @PathVariable String userId) {
+        MedicalRecordResponse response = medicalRecordService.createRecordByUserId(request , userId);
+        return ApiResponse.<MedicalRecordResponse>builder()
+                .code(200)
+                .message("Medical record created successfully")
+                .result(response)
+                .build();
+    }
+
     @GetMapping("/{id}")
     public ApiResponse<MedicalRecordResponse> getById(@PathVariable String id) {
         MedicalRecordResponse response = medicalRecordService.getById(id);
@@ -44,7 +53,16 @@ public class MedicalRecordController {
                 .build();
     }
 
-    // ✅ GET ALL
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<MedicalRecordResponse>> getByUserId(@PathVariable String userId) {
+        List<MedicalRecordResponse> response = medicalRecordService.getByUserIdByPatch(userId);
+        return ApiResponse.<List<MedicalRecordResponse>>builder()
+                .code(200)
+                .message("Medical record fetched successfully")
+                .result(response)
+                .build();
+    }
+
     @GetMapping
     public ApiResponse<List<MedicalRecordResponse>> getAll() {
         List<MedicalRecordResponse> responses = medicalRecordService.getAll();
@@ -55,7 +73,6 @@ public class MedicalRecordController {
                 .build();
     }
 
-    // ✅ GET BY CURRENT USER
     @GetMapping("/my")
     public ApiResponse<List<MedicalRecordResponse>> getByCurrentUser() {
         List<MedicalRecordResponse> responses = medicalRecordService.getByUserId();
@@ -66,7 +83,6 @@ public class MedicalRecordController {
                 .build();
     }
 
-    // ✅ UPDATE
     @PutMapping("/{id}")
     public ApiResponse<MedicalRecordResponse> updateRecord(
             @PathVariable String id,
@@ -79,7 +95,6 @@ public class MedicalRecordController {
                 .build();
     }
 
-    // ✅ DELETE
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteRecord(@PathVariable String id) {
         medicalRecordService.deleteById(id);

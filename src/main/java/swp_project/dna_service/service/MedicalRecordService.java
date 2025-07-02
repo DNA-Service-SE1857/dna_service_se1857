@@ -33,7 +33,6 @@ public class MedicalRecordService {
     UserRepository userRepository;
     MedicalRecordMapper medicalRecordMapper;
 
-    // ✅ CREATE
     public MedicalRecordResponse createRecord(MedicalRecordRequest request) {
         log.info("Creating medical record: {}", request);
         String userId = extractUserIdFromJwt();
@@ -52,7 +51,22 @@ public class MedicalRecordService {
         return response;
     }
 
-    // ✅ READ by ID
+    public MedicalRecordResponse createRecordByUserId(MedicalRecordRequest request , String userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        MedicalRecord record = medicalRecordMapper.toEntity(request);
+        record.setUser(user);
+        record.setCreatedAt(new Date());
+        record.setUpdatedAt(new Date());
+
+        MedicalRecord saved = medicalRecordRepository.save(record);
+        MedicalRecordResponse response = medicalRecordMapper.toResponse(saved);
+        response.setUserId(userId);
+        return response;
+    }
+
     public MedicalRecordResponse getById(String id) {
         log.info("Fetching medical record by ID: {}", id);
         MedicalRecord record = medicalRecordRepository.findById(id)
@@ -60,7 +74,6 @@ public class MedicalRecordService {
         return medicalRecordMapper.toResponse(record);
     }
 
-    // ✅ READ all
     public List<MedicalRecordResponse> getAll() {
         log.info("Fetching all medical records");
         return medicalRecordRepository.findAll().stream()
@@ -68,7 +81,6 @@ public class MedicalRecordService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ READ by user
     public List<MedicalRecordResponse> getByUserId() {
         String userId = extractUserIdFromJwt();
         log.info("Fetching medical records for user: {}", userId);
@@ -83,7 +95,18 @@ public class MedicalRecordService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ UPDATE
+    public List<MedicalRecordResponse> getByUserIdByPatch(String id) {
+
+        List<MedicalRecord> records = medicalRecordRepository.findByUserId(id);
+        return records.stream()
+                .map(record -> {
+                    MedicalRecordResponse res = medicalRecordMapper.toResponse(record);
+                    res.setUserId(id);
+                    return res;
+                })
+                .collect(Collectors.toList());
+    }
+
     public MedicalRecordResponse updateRecord(String id, MedicalRecordRequest request) {
         log.info("Updating medical record ID: {}", id);
         MedicalRecord record = medicalRecordRepository.findById(id)
@@ -97,8 +120,6 @@ public class MedicalRecordService {
         response.setUserId(record.getUser().getId());
         return response;
     }
-
-    // ✅ DELETE
     public void deleteById(String id) {
         log.info("Deleting medical record ID: {}", id);
         if (!medicalRecordRepository.existsById(id)) {
@@ -106,8 +127,6 @@ public class MedicalRecordService {
         }
         medicalRecordRepository.deleteById(id);
     }
-
-    // ✅ Get userId from JWT
     private String extractUserIdFromJwt() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof Jwt jwt) {
