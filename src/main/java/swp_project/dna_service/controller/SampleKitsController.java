@@ -77,6 +77,17 @@ public class SampleKitsController {
                 .build();
     }
 
+    @GetMapping("/order/{orderId}")
+    public ApiResponse<List<SampleKitsResponse>> getSampleKitsByOrderId(@PathVariable String orderId) {
+        log.info("Received get sample kits request for order ID: {}", orderId);
+        List<SampleKitsResponse> responses = sampleKitsService.getSampleKitByOrderId(orderId);
+        return ApiResponse.<List<SampleKitsResponse>>builder()
+                .code(200)
+                .message("Sample kits retrieved successfully")
+                .result(responses)
+                .build();
+    }
+
     @PutMapping("/{id}")
     public ApiResponse<SampleKitsResponse> updateSampleKit(
             @PathVariable String id,

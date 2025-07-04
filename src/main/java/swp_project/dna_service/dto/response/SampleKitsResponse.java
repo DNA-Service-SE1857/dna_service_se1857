@@ -31,4 +31,5 @@ public class SampleKitsResponse {
 
     String samplesId ;
     String userId;
+    String orderId ;
 }

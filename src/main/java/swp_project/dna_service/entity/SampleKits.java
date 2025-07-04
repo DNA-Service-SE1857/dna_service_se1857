@@ -46,4 +46,8 @@ public class SampleKits {
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orders_id", nullable = false)
+    Orders orders;
+
 }

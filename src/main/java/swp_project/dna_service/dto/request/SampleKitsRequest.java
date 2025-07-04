@@ -25,4 +25,5 @@ public class SampleKitsRequest {
             String instruction;
 
             String samplesId ;
+            String orderId ;
 }

@@ -20,6 +20,7 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_ADMIN')")
     public ApiResponse<DoctorResponse> createDoctor(@RequestBody DoctorRequest request) {
         DoctorResponse response = doctorService.createDoctor(request);
         return ApiResponse.<DoctorResponse>builder()
@@ -30,7 +31,7 @@ public class DoctorController {
     }
 
     @PutMapping("/{doctorId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_ADMIN')")
     public ApiResponse<DoctorResponse> updateDoctor(
             @PathVariable String doctorId,
             @RequestBody @jakarta.validation.Valid DoctorRequest request) {

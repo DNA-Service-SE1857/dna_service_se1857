@@ -50,9 +50,8 @@ public class UserController {
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register/doctor")
-    public ApiResponse<UserResponse> registerAdmin(@RequestBody @Valid UserCreationRequest user) {
+    public ApiResponse<UserResponse> registerDoctor(@RequestBody @Valid UserCreationRequest user) {
         log.info("Registering admin: {}", user.getUsername());
-
         return ApiResponse.<UserResponse>builder()
                 .message("Admin registered successfully")
                 .code(200)

@@ -9,11 +9,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import swp_project.dna_service.dto.request.SampleKitsRequest;
 import swp_project.dna_service.dto.response.SampleKitsResponse;
+import swp_project.dna_service.entity.Orders;
 import swp_project.dna_service.entity.Samples;
 import swp_project.dna_service.entity.User;
 import swp_project.dna_service.exception.AppException;
 import swp_project.dna_service.exception.ErrorCode;
 import swp_project.dna_service.mapper.SampleKitsMapper;
+import swp_project.dna_service.repository.OrderRepository;
 import swp_project.dna_service.repository.SampleKitsRepository;
 import swp_project.dna_service.repository.SamplesRepository;
 import swp_project.dna_service.repository.UserRepository;
@@ -33,6 +35,7 @@ public class SampleKitsService {
     SampleKitsMapper sampleKitsMapper;
     SamplesRepository samplesRepository;
     UserRepository userRepository;
+    OrderRepository orderRepository;
     
     // CREATE
     public SampleKitsResponse createSampleKits(SampleKitsRequest request) {
@@ -44,10 +47,14 @@ public class SampleKitsService {
                 
         Samples samples = samplesRepository.findById(request.getSamplesId())
                 .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_NOT_FOUND));
+
+        Orders order = orderRepository.findById(request.getOrderId())
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
                 
         var sampleKits = sampleKitsMapper.toSampleKit(request);
         sampleKits.setSamples(samples);
         sampleKits.setUser(user);
+        sampleKits.setOrders(order);
         
         Date now = new Date();
         sampleKits.setCreatedAt(now);
@@ -59,6 +66,7 @@ public class SampleKitsService {
         response.setId(savedSampleKits.getId());
         response.setSamplesId(samples.getId());
         response.setUserId(user.getId());
+        response.setOrderId(order.getId());
         
         log.info("Sample kit created successfully with ID: {}", savedSampleKits.getId());
         return response;
@@ -78,6 +86,27 @@ public class SampleKitsService {
         
         return response;
     }
+
+    public List<SampleKitsResponse> getSampleKitByOrderId(String orderId) {
+        log.info("Getting sample kit by order ID: {}", orderId);
+
+        List<SampleKits> sampleKits = sampleKitsRepository.findByOrders_Id(orderId);
+        if (sampleKits.isEmpty()) {
+            throw new AppException(ErrorCode.SAMPLE_KITS_NOT_FOUND);
+        }
+
+        return sampleKitsRepository.findAll().stream()
+                .map(kit -> {
+                    var response = sampleKitsMapper.toSampleKitResponse(kit);
+                    response.setId(kit.getId());
+                    response.setSamplesId(kit.getSamples().getId());
+                    response.setUserId(kit.getUser().getId());
+                    response.setOrderId(kit.getOrders().getId());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
     
     public List<SampleKitsResponse> getAllSampleKits() {
         log.info("Getting all sample kits");
