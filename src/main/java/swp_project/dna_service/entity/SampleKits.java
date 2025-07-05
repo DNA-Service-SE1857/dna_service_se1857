@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,9 +39,6 @@ public class SampleKits {
     @Column(name = "updated_at", nullable = false)
     Date updatedAt = new Date();
 
-    @ManyToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "samples_id", nullable = true)
-    Samples samples;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -49,5 +47,9 @@ public class SampleKits {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orders_id", nullable = false)
     Orders orders;
+
+
+    @OneToMany(mappedBy = "sampleKits", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Samples> samples;
 
 }

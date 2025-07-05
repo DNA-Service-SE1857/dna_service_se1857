@@ -48,6 +48,7 @@ public class Samples {
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
-    @OneToMany(mappedBy = "samples", cascade = CascadeType.ALL)
-    List<SampleKits> sampleKits;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sample_kits_id", nullable = true)
+    SampleKits sampleKits;
 }

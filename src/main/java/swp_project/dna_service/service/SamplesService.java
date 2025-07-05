@@ -24,6 +24,7 @@ import swp_project.dna_service.repository.SampleKitsRepository;
 import swp_project.dna_service.repository.SamplesRepository;
 import swp_project.dna_service.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,8 +60,7 @@ public class SamplesService {
         sample.setUpdatedAt(now);
 
         sample.setUser(user);
-        sample.setSampleKits(List.of(sampleKits));
-
+        sample.setSampleKits(sampleKits);
 
         var savedSample = samplesRepository.save(sample);
 
@@ -68,9 +68,7 @@ public class SamplesService {
         
 
         response.setUserId(savedSample.getUser().getId());
-        response.setSampleKitsId(savedSample.getSampleKits().stream()
-                .map(SampleKits::getId)
-                .collect(Collectors.toList()));
+        response.setSampleKitsId(savedSample.getSampleKits().getId());
         log.info("Sample created successfully: {}", response);
         return response;
     }

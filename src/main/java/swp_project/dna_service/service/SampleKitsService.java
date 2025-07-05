@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import swp_project.dna_service.entity.SampleKits;
+import java.util.ArrayList;
 
 @Slf4j
 @Service
@@ -36,23 +37,21 @@ public class SampleKitsService {
     SamplesRepository samplesRepository;
     UserRepository userRepository;
     OrderRepository orderRepository;
-    
-    // CREATE
+
     public SampleKitsResponse createSampleKits(SampleKitsRequest request) {
         log.info("Creating sample kit with request: {}", request);
         
         String userId = extractUserIdFromJwt();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-                
-        Samples samples = samplesRepository.findById(request.getSamplesId())
-                .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_NOT_FOUND));
 
         Orders order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
                 
         var sampleKits = sampleKitsMapper.toSampleKit(request);
-        sampleKits.setSamples(samples);
+        
+
+        sampleKits.setSamples(new ArrayList<>());
         sampleKits.setUser(user);
         sampleKits.setOrders(order);
         
@@ -64,9 +63,12 @@ public class SampleKitsService {
         var response = sampleKitsMapper.toSampleKitResponse(savedSampleKits);
         
         response.setId(savedSampleKits.getId());
-        response.setSamplesId(samples.getId());
         response.setUserId(user.getId());
-        response.setOrderId(order.getId());
+        response.setOrderId(savedSampleKits.getOrders().getId());
+        response.setSamplesId(savedSampleKits.getSamples().stream()
+                .map(Samples::getId)
+                .toList()
+                .toString());
         
         log.info("Sample kit created successfully with ID: {}", savedSampleKits.getId());
         return response;
@@ -81,7 +83,11 @@ public class SampleKitsService {
                 
         var response = sampleKitsMapper.toSampleKitResponse(sampleKit);
         response.setId(sampleKit.getId());
-        response.setSamplesId(sampleKit.getSamples().getId());
+        response.setOrderId(sampleKit.getOrders().getId());
+        response.setSamplesId(sampleKit.getSamples().stream()
+                .map(Samples::getId)
+                .collect(Collectors.toList())
+                .toString());
         response.setUserId(sampleKit.getUser().getId());
         
         return response;
@@ -99,7 +105,10 @@ public class SampleKitsService {
                 .map(kit -> {
                     var response = sampleKitsMapper.toSampleKitResponse(kit);
                     response.setId(kit.getId());
-                    response.setSamplesId(kit.getSamples().getId());
+                    response.setSamplesId(kit.getSamples().stream()
+                            .map(Samples::getId)
+                            .collect(Collectors.toList())
+                            .toString());
                     response.setUserId(kit.getUser().getId());
                     response.setOrderId(kit.getOrders().getId());
                     return response;
@@ -115,7 +124,11 @@ public class SampleKitsService {
                 .map(sampleKit -> {
                     var response = sampleKitsMapper.toSampleKitResponse(sampleKit);
                     response.setId(sampleKit.getId());
-                    response.setSamplesId(sampleKit.getSamples().getId());
+                    response.setSamplesId(sampleKit.getSamples().stream()
+                            .map(Samples::getId)
+                            .collect(Collectors.toList())
+                            .toString());
+
                     response.setUserId(sampleKit.getUser().getId());
                     return response;
                 })
@@ -130,7 +143,11 @@ public class SampleKitsService {
                 .map(sampleKit -> {
                     var response = sampleKitsMapper.toSampleKitResponse(sampleKit);
                     response.setId(sampleKit.getId());
-                    response.setSamplesId(sampleKit.getSamples().getId());
+                    response.setSamplesId(sampleKit.getSamples().stream()
+                            .map(Samples::getId)
+                            .collect(Collectors.toList())
+                            .toString());
+
                     response.setUserId(sampleKit.getUser().getId());
                     return response;
                 })
@@ -148,7 +165,7 @@ public class SampleKitsService {
                     response.setId(sampleKit.getId());
                     
                     if (sampleKit.getSamples() != null) {
-                        response.setSamplesId(sampleKit.getSamples().getId());
+                        response.setSamplesId(sampleKit.getSamples().toString());
                     }
                     
                     if (sampleKit.getUser() != null) {
@@ -179,14 +196,14 @@ public class SampleKitsService {
         if (request.getSamplesId() != null) {
             Samples samples = samplesRepository.findById(request.getSamplesId())
                     .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_NOT_FOUND));
-            existingSampleKit.setSamples(samples);
+            existingSampleKit.setSamples((List<Samples>) samples);
         }
         
         var savedSampleKit = sampleKitsRepository.save(existingSampleKit);
         var response = sampleKitsMapper.toSampleKitResponse(savedSampleKit);
         
         response.setId(savedSampleKit.getId());
-        response.setSamplesId(savedSampleKit.getSamples().getId());
+        response.setSamplesId(savedSampleKit.getSamples().toString());
         response.setUserId(savedSampleKit.getUser().getId());
         
         log.info("Sample kit updated successfully");
