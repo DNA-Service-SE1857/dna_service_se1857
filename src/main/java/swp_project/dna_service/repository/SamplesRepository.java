@@ -11,8 +11,4 @@ public interface SamplesRepository extends JpaRepository<Samples, String> {
 
     List<Samples> findByUserId(String userId);
 
-    List<Samples> findByOrders_Id(String orderId);
-
-    boolean existsByOrdersAndUser(Orders order, User user);
-
 }

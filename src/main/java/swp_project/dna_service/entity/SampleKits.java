@@ -23,9 +23,9 @@ public class SampleKits {
     String kit_code;
     String kit_type;
     String status;
-    String shipper_data;
-    Date delivered_date;
-    int tracking_number ;
+    String shipper_data = "Not Shipped";
+    Date delivered_date = new Date();
+    int tracking_number = 0;
     String shipping_address;
     Date expiry_date;
     String instruction;
@@ -38,8 +38,8 @@ public class SampleKits {
     @Column(name = "updated_at", nullable = false)
     Date updatedAt = new Date();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "samples_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "samples_id", nullable = true)
     Samples samples;
 
     @ManyToOne(fetch = FetchType.LAZY)

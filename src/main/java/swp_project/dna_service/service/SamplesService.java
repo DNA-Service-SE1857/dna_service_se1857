@@ -49,21 +49,15 @@ public class SamplesService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        Orders order = orderRepository.findById(request.getOrderId())
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
-
         SampleKits sampleKits = sampleKitsRepository.findById(request.getSampleKitsId())
                 .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_KITS_NOT_FOUND));
 
-        if (samplesRepository.existsByOrdersAndUser(order, user)) {
-            throw new AppException(ErrorCode.SAMPLE_ALREADY_EXISTS);
-        }
 
         var sample = samplesMapper.toSamples(request);
         Date now = new Date();
         sample.setCreatedAt(now);
         sample.setUpdatedAt(now);
-        sample.setOrders(order);
+
         sample.setUser(user);
         sample.setSampleKits(List.of(sampleKits));
 
@@ -72,7 +66,7 @@ public class SamplesService {
 
         var response = samplesMapper.toSamplesResponse(savedSample);
         
-        response.setOrderId(savedSample.getOrders().getId());
+
         response.setUserId(savedSample.getUser().getId());
         response.setSampleKitsId(savedSample.getSampleKits().stream()
                 .map(SampleKits::getId)
@@ -89,7 +83,6 @@ public class SamplesService {
                 .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_NOT_FOUND));
                 
         var response = samplesMapper.toSamplesResponse(sample);
-        response.setOrderId(sample.getOrders().getId());
         response.setUserId(sample.getUser().getId());
         
         return response;
@@ -101,7 +94,6 @@ public class SamplesService {
         return samplesRepository.findAll().stream()
                 .map(sample -> {
                     var response = samplesMapper.toSamplesResponse(sample);
-                    response.setOrderId(sample.getOrders().getId());
                     response.setUserId(sample.getUser().getId());
                     return response;
                 })
@@ -117,23 +109,6 @@ public class SamplesService {
         return samplesRepository.findByUserId(userId).stream()
                 .map(sample -> {
                     var response = samplesMapper.toSamplesResponse(sample);
-                    response.setOrderId(sample.getOrders().getId());
-                    response.setUserId(sample.getUser().getId());
-                    return response;
-                })
-                .collect(Collectors.toList());
-    }
-
-    public List<SamplesResponse> getSamplesByOrderId(String orderId) {
-        log.info("Getting samples for order ID: {}", orderId);
-
-        orderRepository.findById(orderId)
-                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
-
-        return samplesRepository.findByOrders_Id(orderId).stream()
-                .map(sample -> {
-                    var response = samplesMapper.toSamplesResponse(sample);
-                    response.setOrderId(sample.getOrders().getId());
                     response.setUserId(sample.getUser().getId());
                     return response;
                 })
@@ -150,16 +125,9 @@ public class SamplesService {
         samplesMapper.updateSamples(existingSample, request);
         existingSample.setUpdatedAt(new Date());
 
-        if (request.getOrderId() != null) {
-            Orders order = orderRepository.findById(request.getOrderId())
-                    .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
-            existingSample.setOrders(order);
-        }
 
         var savedSample = samplesRepository.save(existingSample);
         var response = samplesMapper.toSamplesResponse(savedSample);
-        
-        response.setOrderId(savedSample.getOrders().getId());
         response.setUserId(savedSample.getUser().getId());
 
         log.info("Sample updated successfully: {}", response);

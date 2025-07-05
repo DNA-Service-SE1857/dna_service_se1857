@@ -53,9 +53,6 @@ public class Orders {
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     List<Appointment> appointment;
 
-    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
-    Samples samples;
-
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     List<SampleKits> sampleKits;
 

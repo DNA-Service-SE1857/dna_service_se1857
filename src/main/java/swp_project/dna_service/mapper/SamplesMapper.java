@@ -13,6 +13,7 @@ import swp_project.dna_service.entity.Samples;
 public interface SamplesMapper {
 
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Samples toSamples(SamplesRequest request);
 
     SamplesResponse toSamplesResponse(Samples samples);

@@ -29,6 +29,5 @@ public class SamplesResponse {
     String sample_quality;
 
     String userId;
-    String orderId;
     List<String> sampleKitsId;
 }

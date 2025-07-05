@@ -22,19 +22,19 @@ public class Samples {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id ;
 
-    String sample_code ;
+    String sample_code = "No code";
     String sample_type ;
     String collection_method ;
 
     @Temporal(TemporalType.TIMESTAMP)
     Date collection_date ;
     @Temporal(TemporalType.TIMESTAMP)
-    Date received_date;
+    Date received_date = null;
 
-    String status ;
-    String shipping_tracking ;
+    String status = "Collected";
+    String shipping_tracking = null;
     String notes;
-    String sample_quality ;
+    String sample_quality  = null;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -47,10 +47,6 @@ public class Samples {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     User user;
-
-    @OneToOne
-    @JoinColumn(name = "orders_id", nullable = false)
-    Orders orders;
 
     @OneToMany(mappedBy = "samples", cascade = CascadeType.ALL)
     List<SampleKits> sampleKits;

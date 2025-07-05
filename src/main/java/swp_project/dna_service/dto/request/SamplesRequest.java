@@ -26,6 +26,5 @@ public class SamplesRequest {
     String sample_quality;
 
     String userId;
-    String orderId;
     String sampleKitsId;
 }

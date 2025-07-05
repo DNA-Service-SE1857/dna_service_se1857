@@ -67,17 +67,6 @@ public class SamplesController {
                 .build();
     }
 
-    @GetMapping("/order/{orderId}")
-    public ApiResponse<List<SamplesResponse>> getSamplesByOrderId(@PathVariable String orderId) {
-        log.info("Received get samples request for order ID: {}", orderId);
-        List<SamplesResponse> responses = samplesService.getSamplesByOrderId(orderId);
-        return ApiResponse.<List<SamplesResponse>>builder()
-                .code(200)
-                .message("Lấy danh sách mẫu xét nghiệm theo đơn hàng thành công")
-                .result(responses)
-                .build();
-    }
-
     // UPDATE
     @PutMapping("/{id}")
     public ApiResponse<SamplesResponse> updateSample(
