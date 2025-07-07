@@ -16,4 +16,7 @@ public interface SampleKitsRepository extends JpaRepository<SampleKits, String> 
     List<SampleKits> findBySamplesId (String sampleId);
 
     List<SampleKits> findByOrders_Id(String orderId);
+
+    @Query("SELECT sk FROM SampleKits sk WHERE sk.orderParticipants.id = :orderParticipantsId")
+    Optional<SampleKits> findByOrderParticipantsId(@Param("orderParticipantsId") String orderParticipantsId);
 }

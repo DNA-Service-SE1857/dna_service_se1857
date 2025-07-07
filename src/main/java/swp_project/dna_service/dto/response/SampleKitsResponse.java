@@ -29,6 +29,7 @@ public class SampleKitsResponse {
     Date createdAt;
     Date updatedAt;
 
+    String order_participants_id ;
     String samplesId ;
     String userId;
     String orderId ;

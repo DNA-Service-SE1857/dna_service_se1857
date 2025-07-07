@@ -24,6 +24,7 @@ public class SampleKitsRequest {
             Date expiry_date;
             String instruction;
 
+            String order_participants_id ;
             String samplesId ;
             String orderId ;
 }

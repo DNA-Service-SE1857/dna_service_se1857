@@ -25,7 +25,7 @@ public class Orders {
     float total_amount ;
     String payment_method ;
     String payment_status ;
-    String payment_date ;
+    String payment_date = null;
     String transaction_id ;
     String notes;
 

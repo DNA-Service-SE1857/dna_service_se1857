@@ -44,6 +44,17 @@ public class SampleKitsController {
                 .build();
     }
 
+    @GetMapping("/participants/{orderParticipantsId}")
+    public ApiResponse<List<SampleKitsResponse>> getSampleKitsByOrderParticipantsId(@PathVariable String orderParticipantsId) {
+        log.info("Received get sample kits request for order participants ID: {}", orderParticipantsId);
+        List<SampleKitsResponse> responses = sampleKitsService.getSampleKitByParticipantsId(orderParticipantsId);
+        return ApiResponse.<List<SampleKitsResponse>>builder()
+                .code(200)
+                .message("Sample kits retrieved successfully")
+                .result(responses)
+                .build();
+    }
+
     @GetMapping
     public ApiResponse<List<SampleKitsResponse>> getAllSampleKits() {
         log.info("Received get all sample kits request");

@@ -48,8 +48,12 @@ public class SampleKits {
     @JoinColumn(name = "orders_id", nullable = false)
     Orders orders;
 
-
     @OneToMany(mappedBy = "sampleKits", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Samples> samples;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_participants_id", nullable = false)
+    OrderParticipants orderParticipants;
+
 
 }

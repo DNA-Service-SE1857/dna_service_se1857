@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +28,7 @@ public class OrderParticipants {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orders_id", nullable = false)
     Orders orders;
+
+    @OneToOne(mappedBy = "orderParticipants", cascade = CascadeType.ALL)
+    SampleKits sampleKits;
 }
