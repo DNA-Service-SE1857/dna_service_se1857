@@ -23,6 +23,7 @@ public class Orders {
     int order_code;
     String status ;
     float total_amount ;
+    String collection_method ;
     String payment_method ;
     String payment_status ;
     String payment_date = null;

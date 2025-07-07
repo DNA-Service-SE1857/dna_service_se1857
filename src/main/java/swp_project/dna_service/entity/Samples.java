@@ -24,7 +24,6 @@ public class Samples {
 
     String sample_code = "No code";
     String sample_type ;
-    String collection_method ;
 
     @Temporal(TemporalType.TIMESTAMP)
     Date collection_date ;

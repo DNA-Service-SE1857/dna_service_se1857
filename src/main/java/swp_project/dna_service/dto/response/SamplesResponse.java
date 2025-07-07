@@ -18,7 +18,6 @@ public class SamplesResponse {
     String id;
     String sample_code;
     String sample_type;
-    String collection_method;
 
     Date collection_date;
     Date received_date;
