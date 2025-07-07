@@ -55,5 +55,4 @@ public class SampleKits {
     @JoinColumn(name = "order_participants_id", nullable = false)
     OrderParticipants orderParticipants;
 
-
 }

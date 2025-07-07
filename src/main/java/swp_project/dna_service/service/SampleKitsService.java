@@ -128,7 +128,7 @@ public class SampleKitsService {
             throw new AppException(ErrorCode.SAMPLE_KITS_NOT_FOUND);
         }
 
-        return sampleKitsRepository.findAll().stream()
+        return sampleKits.stream()
                 .map(kit -> {
                     var response = sampleKitsMapper.toSampleKitResponse(kit);
                     response.setId(kit.getId());
