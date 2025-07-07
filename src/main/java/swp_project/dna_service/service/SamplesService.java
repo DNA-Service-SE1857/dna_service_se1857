@@ -127,6 +127,7 @@ public class SamplesService {
         var savedSample = samplesRepository.save(existingSample);
         var response = samplesMapper.toSamplesResponse(savedSample);
         response.setUserId(savedSample.getUser().getId());
+        response.setSampleKitsId(savedSample.getSampleKits().getId());
 
         log.info("Sample updated successfully: {}", response);
         return response;

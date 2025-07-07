@@ -50,4 +50,5 @@ public class Samples {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sample_kits_id", nullable = true)
     SampleKits sampleKits;
+
 }

@@ -32,15 +32,6 @@ public class OrderController {
                 .result(response)
                 .build();
     }
-    @PostMapping("/{orderId}")
-    public ApiResponse<OrderResponse> updateOrder(@RequestBody OrderRequest request, @PathVariable String orderId) {
-        OrderResponse response = orderService.updateOrder(orderId , request);
-        return ApiResponse.<OrderResponse>builder()
-                .code(200)
-                .message("Order updated successfully")
-                .result(response)
-                .build();
-    }
 
     @GetMapping("/user/{userId}")
     public ApiResponse<List<OrderResponse>> getOrdersByUserId(@PathVariable String userId) {
