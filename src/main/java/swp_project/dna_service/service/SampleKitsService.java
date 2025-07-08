@@ -205,37 +205,53 @@ public class SampleKitsService {
 }
 
 
-    // UPDATE
     public SampleKitsResponse updateSampleKit(String id, SampleKitsRequest request) {
         log.info("Updating sample kit ID: {} with request: {}", id, request);
-        
+
         var existingSampleKit = sampleKitsRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_KITS_NOT_FOUND));
-        
+
         String userId = extractUserIdFromJwt();
         if (!existingSampleKit.getUser().getId().equals(userId)) {
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
-        
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        Orders order = orderRepository.findById(request.getOrderId())
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
+
+        OrderParticipants orderParticipant = orderParticipantsRepository.findById(request.getOrder_participants_id())
+                .orElseThrow(() -> new AppException(ErrorCode.ORDER_PARTICIPANT_NOT_FOUND));
+
         sampleKitsMapper.updateSampleKit(existingSampleKit, request);
+
+
+        existingSampleKit.setUser(user);
+        existingSampleKit.setOrders(order);
+        existingSampleKit.setOrderParticipants(orderParticipant);
+
+
         existingSampleKit.setUpdatedAt(new Date());
-        
-        if (request.getSamplesId() != null) {
-            Samples samples = samplesRepository.findById(request.getSamplesId())
-                    .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_NOT_FOUND));
-            existingSampleKit.setSamples((List<Samples>) samples);
-        }
-        
+
+
         var savedSampleKit = sampleKitsRepository.save(existingSampleKit);
         var response = sampleKitsMapper.toSampleKitResponse(savedSampleKit);
-        
+
         response.setId(savedSampleKit.getId());
-        response.setSamplesId(savedSampleKit.getSamples().toString());
-        response.setUserId(savedSampleKit.getUser().getId());
-        
-        log.info("Sample kit updated successfully");
+        response.setUserId(user.getId());
+        response.setOrderId(savedSampleKit.getOrders().getId());
+        response.setOrder_participants_id(savedSampleKit.getOrderParticipants().getId());
+        response.setSamplesId(savedSampleKit.getSamples().stream()
+                .map(Samples::getId)
+                .toList()
+                .toString());
+
+        log.info("Sample kit updated successfully with ID: {}", savedSampleKit.getId());
         return response;
     }
+
 
     // DELETE
     public void deleteSampleKit(String id) {
