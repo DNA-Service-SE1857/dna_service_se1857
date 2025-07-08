@@ -91,6 +91,7 @@ public class SampleKitsService {
                 .collect(Collectors.toList())
                 .toString());
         response.setUserId(sampleKit.getUser().getId());
+        response.setOrder_participants_id(sampleKit.getOrderParticipants().getId());
         
         return response;
     }
