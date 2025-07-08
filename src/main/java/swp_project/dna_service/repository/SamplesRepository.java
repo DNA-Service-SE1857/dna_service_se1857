@@ -11,4 +11,8 @@ public interface SamplesRepository extends JpaRepository<Samples, String> {
 
     List<Samples> findByUserId(String userId);
 
+    List<Samples> findBySampleKitsId(String sampleKitsId);
+
+
+
 }

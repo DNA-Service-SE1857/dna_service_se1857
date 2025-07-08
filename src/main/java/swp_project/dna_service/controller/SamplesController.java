@@ -45,6 +45,17 @@ public class SamplesController {
                 .build();
     }
 
+    @GetMapping("/samplekits/{sampleKitsId}")
+    public ApiResponse<List<SamplesResponse>> getSamplesBySampleKitsId(@PathVariable String sampleKitsId) {
+        log.info("Received get samples request for sample kits ID: {}", sampleKitsId);
+        List<SamplesResponse> responses = samplesService.getSamplesBySampleKitId(sampleKitsId);
+        return ApiResponse.<List<SamplesResponse>>builder()
+                .code(200)
+                .message("Lấy danh sách mẫu xét nghiệm theo bộ mẫu thành công")
+                .result(responses)
+                .build();
+    }
+
     @GetMapping
     public ApiResponse<List<SamplesResponse>> getAllSamples() {
         log.info("Received get all samples request");

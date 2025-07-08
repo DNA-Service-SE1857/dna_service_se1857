@@ -98,6 +98,21 @@ public class SamplesService {
                 .collect(Collectors.toList());
     }
 
+    public List<SamplesResponse> getSamplesBySampleKitId(String sampleKitId) {
+        log.info("Getting samples for sample kit ID: {}", sampleKitId);
+
+        sampleKitsRepository.findById(sampleKitId)
+                .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_KITS_NOT_FOUND));
+        return samplesRepository.findBySampleKitsId(sampleKitId).stream()
+                .map(sample -> {
+                    var response = samplesMapper.toSamplesResponse(sample);
+                    response.setUserId(sample.getUser().getId());
+                    response.setSampleKitsId(sample.getSampleKits().getId());
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
+
     public List<SamplesResponse> getSamplesByUserId(String userId) {
         log.info("Getting samples for user ID: {}", userId);
 
