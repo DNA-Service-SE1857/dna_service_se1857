@@ -50,6 +50,7 @@ public enum ErrorCode {
     SAMPLE_NOT_FOUND(128, "Sample not found", HttpStatus.NOT_FOUND),
     SAMPLE_KITS_NOT_FOUND(129, "Sample kits not found", HttpStatus.NOT_FOUND),
     ORDER_PARTICIPANT_NOT_FOUND(130, "Order participant not found", HttpStatus.NOT_FOUND),
+    TEST_RESULT_NOT_FOUND(131, "Test result not found", HttpStatus.NOT_FOUND),
     DOB_INVALID(99, "Date of birth need > 15 year old", HttpStatus.BAD_REQUEST);
 
     int code ;

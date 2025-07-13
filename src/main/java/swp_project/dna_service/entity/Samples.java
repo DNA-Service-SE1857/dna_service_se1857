@@ -51,4 +51,6 @@ public class Samples {
     @JoinColumn(name = "sample_kits_id", nullable = true)
     SampleKits sampleKits;
 
+    @OneToOne(mappedBy = "samples")
+    TestResult testResult;
 }

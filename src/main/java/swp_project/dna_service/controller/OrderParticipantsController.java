@@ -22,7 +22,7 @@ public class OrderParticipantsController {
 
     OrderParticipantsService orderParticipantsService;
 
-    // CREATE
+
     @PostMapping("/{orderId}")
     public ApiResponse<OrderParticipantsResponse> createOrderParticipants(
             @RequestBody OrderParticipantsRequest request,
@@ -37,7 +37,7 @@ public class OrderParticipantsController {
                 .build();
     }
 
-    // READ - Get by ID
+
     @GetMapping("/{id}")
     public ApiResponse<OrderParticipantsResponse> getOrderParticipantById(@PathVariable String id) {
         OrderParticipantsResponse response = orderParticipantsService.getOrderParticipantById(id);
@@ -49,7 +49,7 @@ public class OrderParticipantsController {
                 .build();
     }
 
-    // READ - Get all
+
     @GetMapping
     public ApiResponse<List<OrderParticipantsResponse>> getAllOrderParticipants() {
         List<OrderParticipantsResponse> responses = orderParticipantsService.getAllOrderParticipants();
@@ -61,7 +61,6 @@ public class OrderParticipantsController {
                 .build();
     }
 
-    // READ - Get by orderId
     @GetMapping("/order/{orderId}")
     public ApiResponse<List<OrderParticipantsResponse>> getOrderParticipantsByOrderId(@PathVariable String orderId) {
         List<OrderParticipantsResponse> responses = orderParticipantsService.getByOrderId(orderId);
@@ -73,7 +72,7 @@ public class OrderParticipantsController {
                 .build();
     }
 
-    // UPDATE
+
     @PutMapping("/{id}")
     public ApiResponse<OrderParticipantsResponse> updateOrderParticipant(
             @PathVariable String id,
@@ -88,7 +87,7 @@ public class OrderParticipantsController {
                 .build();
     }
 
-    // DELETE
+
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteOrderParticipant(@PathVariable String id) {
         orderParticipantsService.deleteOrderParticipant(id);

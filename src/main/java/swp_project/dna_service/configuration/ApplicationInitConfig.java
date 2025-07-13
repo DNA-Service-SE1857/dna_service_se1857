@@ -21,6 +21,7 @@ import swp_project.dna_service.repository.UserRepository;
 @Slf4j
 public class ApplicationInitConfig {
 
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     Role Role;
