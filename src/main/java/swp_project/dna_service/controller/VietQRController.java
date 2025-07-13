@@ -1,35 +1,39 @@
 package swp_project.dna_service.controller;
 
-
-import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import swp_project.dna_service.service.QRcode.VietQRService;
+import org.springframework.web.bind.annotation.*;
+import swp_project.dna_service.dto.request.VietQRRequest;
+import swp_project.dna_service.dto.response.VietQRResponse;
+import swp_project.dna_service.service.QRService;
+
 
 
 @RestController
-@RequestMapping("/pay")
+@RequestMapping("/qr")
 public class VietQRController {
 
-    @Autowired
-    private VietQRService vietQRService;
+    private final QRService qrService;
+
+    public VietQRController(QRService qrService) {
+        this.qrService = qrService;
+    }
 
     @GetMapping("/generate")
-    public ResponseEntity<Resource> generateQR(
-            @RequestParam String accountNumber,
-            @RequestParam String bankCode,
-            @RequestParam String accountName,
-            @RequestParam int amount) {
+    public ResponseEntity<?> generateQR() {
+        try {
+            VietQRResponse response = qrService.generateQR();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi tạo QR: " + e.getMessage());
+        }
+    }
 
-        Resource qrImage = vietQRService.generateVietQR(accountNumber, bankCode, accountName, amount);
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
-                .body(qrImage);
+    @PostMapping("/generate")
+    public ResponseEntity<VietQRResponse> generateQR(@RequestBody VietQRRequest request) {
+        VietQRResponse response = qrService.generateQR(request);
+        return ResponseEntity.ok(response);
     }
 }

@@ -65,9 +65,11 @@ public class UserService {
         }
 
         userMapper.updateUser(user, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setCreatedAt(new java.util.Date());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
         user.setUpdatedAt(new java.util.Date());
 
         userRepository.save(user);
