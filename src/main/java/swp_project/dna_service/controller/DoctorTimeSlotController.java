@@ -30,7 +30,7 @@ public class DoctorTimeSlotController {
     }
 
     @PutMapping("/{slotId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCTOR')")
     public ApiResponse<DoctorTimeSlotResponse> updateDoctorTimeSlot(
             @PathVariable String slotId,
             @RequestBody @Valid DoctorTimeSlotRequest request) {

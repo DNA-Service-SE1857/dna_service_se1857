@@ -34,7 +34,7 @@ public class DoctorController {
     @PreAuthorize("hasRole('ROLE_DOCTOR') or hasRole('ROLE_ADMIN')")
     public ApiResponse<DoctorResponse> updateDoctor(
             @PathVariable String doctorId,
-            @RequestBody @jakarta.validation.Valid DoctorRequest request) {
+            @RequestBody  DoctorRequest request) {
         DoctorResponse response = doctorService.updateDoctor(doctorId, request);
         return ApiResponse.<DoctorResponse>builder()
                 .code(200)
