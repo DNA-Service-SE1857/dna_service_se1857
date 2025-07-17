@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: dna_service_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: AiqXCpdVWbUUTbAcKhircCUdUnBPbPxJ
+      MYSQL_DATABASE: railway
+      MYSQL_USER: root
+      MYSQL_PASSWORD: AiqXCpdVWbUUTbAcKhircCUdUnBPbPxJ
+    ports:
+      - "53292:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: dna_service
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: dna_service
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/railway?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: AiqXCpdVWbUUTbAcKhircCUdUnBPbPxJ
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS: "true"
+      SERVER_PORT: 8080
+      SERVER_SERVLET_CONTEXT_PATH: /dna_service
+      JWT_SECRET: secret
+      JWT_SIGNER_KEY: 2VJ50pdhYm96e4VECp/vsZGVmkSl9xp1rSYAZKsZL7n9Ti1pZYle3k9mheQEKt6+
+    restart: on-failure
+
+volumes:
+  mysql_data:
