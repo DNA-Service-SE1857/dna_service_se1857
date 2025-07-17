@@ -82,8 +82,8 @@ public class TestResultController {
     @GetMapping("/user/{userId}")
     public ApiResponse<List<TestResultResponse>> getTestResultsByUserId(@PathVariable String userId) {
         log.info("Received get test results request for user ID: {}", userId);
-        // Note: Phương thức này có thể cần thêm vào service với kiểm tra quyền admin
-        List<TestResultResponse> responses = testResultService.getAllTestResults(); // Tạm thời dùng method hiện tại
+
+        List<TestResultResponse> responses = testResultService.getTestResultsByUserId(userId);
         return ApiResponse.<List<TestResultResponse>>builder()
                 .code(200)
                 .message("Lấy kết quả xét nghiệm theo người dùng thành công")

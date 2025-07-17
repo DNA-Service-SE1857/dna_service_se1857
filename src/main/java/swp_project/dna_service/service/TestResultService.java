@@ -90,6 +90,34 @@ public class TestResultService {
 
 
     @Transactional
+    public List<TestResultResponse> getTestResultsByUserId(String userId) {
+        userId = extractUserIdFromJwt();
+        log.info("Getting all test results for user: {}", userId);
+
+        List<TestResult> testResults = testResultRepository.findByUserId(userId);
+
+        return testResults.stream()
+                .map(result -> {
+                    TestResultResponse response = testResultMapper.toTestResultResponse(result);
+                    response.setUserId(result.getUser().getId());
+
+                    if (result.getOrders() != null) {
+                        response.setOrders_id(result.getOrders().getId());
+                    } else {
+                        response.setOrders_id(null);
+                    }
+
+                    response.setSamplesId(result.getSamples().stream()
+                            .map(Samples::getId)
+                            .toList()
+                            .toString());
+                    return response;
+                })
+                .collect(Collectors.toList());
+
+    }
+
+    @Transactional
     public List<TestResultResponse> getAllTestResults() {
         String userId = extractUserIdFromJwt();
         log.info("Getting all test results for user: {}", userId);
@@ -100,15 +128,23 @@ public class TestResultService {
                 .map(result -> {
                     TestResultResponse response = testResultMapper.toTestResultResponse(result);
                     response.setUserId(result.getUser().getId());
-                    response.setOrders_id(result.getOrders().getId());
+
+
+                    if (result.getOrders() != null) {
+                        response.setOrders_id(result.getOrders().getId());
+                    } else {
+                        response.setOrders_id(null);
+                    }
                     response.setSamplesId(result.getSamples().stream()
                             .map(Samples::getId)
                             .toList()
                             .toString());
+
                     return response;
                 })
                 .collect(Collectors.toList());
     }
+
 
     @Transactional
     public TestResultResponse getTestResultById(String id) {
@@ -158,10 +194,6 @@ public class TestResultService {
 
         Samples sample = samplesRepository.findById(sampleId)
                 .orElseThrow(() -> new AppException(ErrorCode.SAMPLE_NOT_FOUND));
-
-        if (!sample.getUser().getId().equals(userId)) {
-            throw new AppException(ErrorCode.UNAUTHORIZED);
-        }
 
         List<TestResult> testResults = testResultRepository.findBySamplesId(sampleId);
 
