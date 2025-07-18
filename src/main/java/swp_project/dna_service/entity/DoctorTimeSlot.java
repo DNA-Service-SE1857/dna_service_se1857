@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
@@ -24,6 +25,9 @@ public class DoctorTimeSlot {
 
     @Column(name = "day_of_week")
     Integer dayOfWeek;
+
+    @Column(name = "specific_date")
+    LocalDate specificDate;
 
     @Column(name = "start_time")
     LocalTime startTime;
