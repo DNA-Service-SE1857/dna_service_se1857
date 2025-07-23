@@ -19,6 +19,8 @@ public class PostStatus {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String title ;
+
+    @Column(columnDefinition = "TEXT")
     String content;
     String imageUrl;
 
