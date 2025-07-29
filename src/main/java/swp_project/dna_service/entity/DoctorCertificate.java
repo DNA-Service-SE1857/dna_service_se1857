@@ -3,8 +3,10 @@ package swp_project.dna_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import swp_project.dna_service.image.Image;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -46,4 +48,7 @@ public class DoctorCertificate {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
     Doctor doctor;
+
+    @OneToMany(mappedBy = "doctorCertificate", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Image> images;
 }
