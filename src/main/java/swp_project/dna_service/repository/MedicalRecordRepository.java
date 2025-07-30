@@ -9,5 +9,4 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, St
 
     List<MedicalRecord> findByUserId(String userId);
 
-
 }
