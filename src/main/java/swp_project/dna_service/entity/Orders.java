@@ -61,7 +61,7 @@ public class Orders {
     List<Samples> samples;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
-    private TestResult testResult;
+    TestResult testResult;
 
 
 }

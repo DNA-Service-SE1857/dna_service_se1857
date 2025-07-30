@@ -63,15 +63,15 @@ public class MedicalRecordController {
                 .build();
     }
 
-    @GetMapping
-    public ApiResponse<List<MedicalRecordResponse>> getAll() {
-        List<MedicalRecordResponse> responses = medicalRecordService.getAll();
-        return ApiResponse.<List<MedicalRecordResponse>>builder()
-                .code(200)
-                .message("All medical records fetched")
-                .result(responses)
-                .build();
-    }
+//    @GetMapping
+//    public ApiResponse<List<MedicalRecordResponse>> getAll() {
+//        List<MedicalRecordResponse> responses = medicalRecordService.getAll();
+//        return ApiResponse.<List<MedicalRecordResponse>>builder()
+//                .code(200)
+//                .message("All medical records fetched")
+//                .result(responses)
+//                .build();
+//    }
 
     @GetMapping("/my")
     public ApiResponse<List<MedicalRecordResponse>> getByCurrentUser() {

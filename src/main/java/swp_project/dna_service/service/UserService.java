@@ -16,6 +16,7 @@ import swp_project.dna_service.entity.User;
 import swp_project.dna_service.exception.AppException;
 import swp_project.dna_service.exception.ErrorCode;
 import swp_project.dna_service.mapper.UserMapper;
+import swp_project.dna_service.repository.MedicalRecordRepository;
 import swp_project.dna_service.repository.RoleRepository;
 import swp_project.dna_service.repository.UserRepository;
 import java.util.HashSet;
@@ -30,6 +31,7 @@ public class UserService {
 
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    MedicalRecordRepository medicalRecordRepository;
     UserMapper userMapper;
     RoleRepository roleRepository;
 
